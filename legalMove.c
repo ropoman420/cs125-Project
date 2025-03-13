@@ -21,12 +21,12 @@ int legalMove(newX, newY, board[][], /*what other variables?*/);
   switch(type)
   {
     case (1 /*pawn*/):
-      if (newX == /*old input + 1*/ && newY == /*old input + 1*/ && type < 0)
+      if (newX == /*old input + 1*/ && newY == /*old input + 1*/ && board[newX][newY] < 0)
       {
         /*replace enemy piece with pawn*/
         return 1;
       }
-      else if (newX == /*old input - 1*/ && newY == /*old input + 1*/ && type < 0)
+      else if (newX == /*old input - 1*/ && newY == /*old input + 1*/ && board[newX][newY] < 0)
       {
         /*replace enemy piece with pawn*/
         return 1;
