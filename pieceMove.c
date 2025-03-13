@@ -8,6 +8,7 @@ void pieceMove(i, j, board[][], /*whatother variables?*/)
   scanf("%c", &newX);
   printf("What row would you like your new piece to be in?: \n");
   scanf("%d", &newY);
+
   validMove = legalMove(newX, newY, board[][], /*what other variables?*/);
   
   while(validMove == 0)
