@@ -1,24 +1,36 @@
 //This function will check the legality of a player's desired move. 
 //RETURN 1 means that the move IS legal. RETURN 0 means the move is NOT legal
 
-int legalMove(newX, newY, board[][], /*what other variables?*/);
-{  
+#define BOARD 10
 
-  /*which piece? check
-  type == */ 
+int legalMove(int board[BOARD][BOARD], int board2[BOARD][BOARD], int coord[2], int newCoord[2], int turn);
+{  
+  int piece = 0;
+
+  int x1 = coord[0];
+  int y1 = coord[1];
   
-  if (newX > 8 || newY > 8 || newX < 1 || newY < 1)
+  int x2 = newCoord[0];
+  int y2 = newCoord[1];
+  
+  if ()
   {
-    printf("This is beyond the constraints of the board. Please try again\n");
+    printf("This is beyond the constraints of the board. Please try again.\n");
     return 0;
   }
   else
   {
-    printf("");
+    piece = board[y1][x1];
+  }
+  
+  if (((turn % 2 == 0) && (piece > 0)) || ((turn % 2 == 1) && (piece < 0)))
+  {
+    printf("You can only move your pieces.\n");
+    return 0;
   }
     
     
-  switch(type)
+  switch(piece)
   {
     case (1 /*pawn*/):
       if (newX == /*old input + 1*/ && newY == /*old input + 1*/ && board[newX][newY] < 0)
@@ -115,7 +127,7 @@ int legalMove(newX, newY, board[][], /*what other variables?*/);
     case (7 /*king*/):
       if
       {
-        
+        // Ellis here, im writing a function specifically for testing the king and will just call that here
       }
       else if (type < 0 && /*los == queen*/, /*add checks for validity of taking pieces*/)
       {

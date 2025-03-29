@@ -85,7 +85,7 @@ int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int dire
   int col = coordStart[0];
   int match = 0;
   
-  while(currPiece == 0)
+  while((currPiece == 0) || (currPiece == 4) || (currPiece == -4))
   {
     row += di;
     col += dj;
@@ -119,7 +119,7 @@ int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int dire
 int testDirection(int pos1[2], int pos2[2])
 {
   int direction = 0;
-  int slope;
+  int slope = 10;
   
   int difY = pos2[1] - pos1[1];
   int difX = pos2[0] - pos1[0];
@@ -147,8 +147,11 @@ int testDirection(int pos1[2], int pos2[2])
     }
   }
   else
-  {
-    slope = difY / difX;
+  { 
+    if(makePos(difY) == makePos(difX))
+    {
+      slope = difY / difX;
+    }
     
     if(slope == 1)
     {
