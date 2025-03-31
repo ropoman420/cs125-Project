@@ -21,7 +21,62 @@ int makePos(int value)
 
 int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction, int cmp)
 {
-
+  int di = 0;
+  int dj = 0;
+  switch(direction)
+  {
+    int add;
+    case 1:
+      di = 1;
+      dj = 2;
+      break;
+    case 2:
+      di = 2;
+      dj = 1;
+      break;
+    case 3:
+      di = 2;
+      dj = -1;
+      break;
+    case 4:
+      di = 1;
+      dj = -2;
+      break;
+    case 5:
+      di = -1;
+      dj = 2;
+      break;
+    case 6:
+      di = -2;
+      dj = -1;
+      break;
+    case 7:
+      di = -2;
+      dj = 1;
+      break;
+    case 8:
+      di = -1;
+      dj = 2;
+      break;
+    default:
+      printf("Invalid Knight Movement");
+      break;
+  }
+  
+  int currPiece = 0;
+  int row = coordStart[1];
+  int col = coordStart[0];
+  int y = row + dj;
+  int x = col + di;
+    
+  if( (y > 8) || (y < 1) || (x > 8) || (x < 1) )
+  {
+    printf("The move is out of bounds please select another: ");
+  }
+  else 
+  {
+    currPiece = board[x][y];
+  }
 
 }
 
