@@ -5,7 +5,7 @@
 
 
 
-int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2], /*Are these necessary?*/, int coord[2], int newCoord[2], );
+int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2] /*Are these necessary?, int coord[2], int newCoord[2], */)
 {  
   int pieceVal;  //This is the piece's value that is passed in initially into the function
   
@@ -59,10 +59,16 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
           
           if(dummyRay == 1)
           {
-            legal = 1;
+            legal = 1; //If legal = 1, then the movement in legal
+          }
+          else
+          {
+            legal - 0; //If legal = 0, then the movement is not legal. Rather than printing an illegal move statement repeatedly, only the value is changed
           }
         }
         break;
+        
+        
       case 6 /*Queen movement*/:
         for(i=1; i<=8; i++)
         {
@@ -72,8 +78,14 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
           {
             legal = 1;
           }
+          else
+          {
+            legal - 0;
+          }
         }
         break;
+        
+        
       case 5 /*Rook movement*/:
         for(i=1; i<=8; i+=2)
         {
@@ -83,8 +95,14 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
           {
             legal = 1;
           }
+          else
+          {
+            legal - 0;
+          }
         }
         break;
+        
+        
       case 3 /*Bishop movement*/:
         for(i=2; i<8; i+=2)
         {
@@ -94,8 +112,14 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
           {
             legal = 1;
           }
+          else
+          {
+            legal - 0;
+          }
         }
         break;
+        
+        
       case 2 /*Knight movement*/:
         disx = makePos((newX - x));      //These two lines have been altered and unverified
         disy = makePos((newY - y));
@@ -104,12 +128,22 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
         {
           legal = 1;
         }
+        else
+        {
+          legal - 0;
+        }
         break;
+        
+        
       case 1 /*Pawn movement*/:
         //Forward 1
         if((board[y+type][x] == 0) && (y+type == newY) && (x == newX))
         {
           legal = 1;
+        }
+        else
+        {
+          legal - 0;
         }
         
         //Forward 2 check for pawn
@@ -120,11 +154,19 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
             legal = 1;
             //Pawns can go 2 spaces forward if on their home row
           }
+          else
+          {
+            legal - 0;
+          }
           
           if((type == -1) && (y == 7))
           {
             legal = 1;
             //Pawns can go 2 spaces forward if on their home row
+          }
+          else
+          {
+            legal = 0;
           }
         }
         
@@ -135,9 +177,17 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
         {
           legal = 1;
           printf("Your pawn captured a piece!\n");
+        }        
+        else
+        {
+          legal = 0;
         }
+        
         break;
-    }
+        
+return legal;
+}
+
     
   
   
