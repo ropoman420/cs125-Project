@@ -6,213 +6,394 @@
 #define BOARD 10
 
 /*
-	Authors:
+	Authors: Caleb Groover, Ellis Garrett, Roman Warder
 	Class: CS125
 	Assignment: Final Project
-	Date:
+	Date: 3/31/2025
 */
 
 int main()
 {
-  clock_t start, end;
-  double cpu_time_used;
-  start = clock();
-
-  //initialize board
+  //Program initializes user gameplay selections and establishes an error check variable
+  int userSelect = 0;
+  int errCheck = 1;
   
-	int board[BOARD][BOARD];
-  int boardMove[BOARD][BOARD];
-  int board3[BOARD][BOARD];
-  int checkSquares[BOARD][BOARD];
-	int i;
-	int j;	
-
-	for(i=0; i<BOARD; i++)
-	{
-		for(j=0; j<BOARD; j++)
-		{
-			board[i][j] = 0;
-      board3[i][j] = 0;
-      boardMove[i][j] = 0;
-      checkSquares[i][j] = 0;
-		}
-	}
   
-  // list of all legal moves
-  int moveList[250];
-  for(i=0; i<250; i++)
-  {
-    moveList[i] = 0;
-  }
-
-	makeBoard(board);
-  updateBoard(boardMove, board);
+  //User decides what kind of game they would like to play
+  printf("Shall we play a game (1 for PvE, 2 for EvE)?\n");
+  errCheck = scanf("%d", &userSelect);
   
-  int turn = 1;
-  
-  // mate in 2
-  
-  //clear board
-  /*
-  for(i=1; i<9; i++)
-  {
-    for(j=1; j<9; j++)
+  /*if (errCheck != 1)
     {
-      board[i][j] = 0;
+      printf("Please enter a valid integer and try again\n");
     }
-  }
-  
-  board[6][8] = -7;
-  board[1][4] = 7;
-  
-  board[3][3] = -2;
-  */
-  
-  /*
-  board[1][2] = 5;
-  board[1][6] = 3;
-  board[1][7] = 2;
-  board[3][2] = -1;
-  board[3][5] = 7;
-  board[4][1] = -5;
-  board[4][2] = 1;
-  board[4][3] = 1;
-  board[4][7] = -1;
-  board[6][1] = -3;
-  board[6][2] = -1;
-  board[6][8] = 5;
-  board[7][4] = -7;
-  board[7][5] = 1;
-  board[8][8] = 3;
-  */
-  
-	//printBoardChar(board, turn);
-  
-  int checkCoords[2];
-  checkCoords[0] = 0;
-  checkCoords[1] = 0;
-  
-  int kingCoords[2];
-  kingCoords[0] = 0;
-  kingCoords[1] = 0;
-  
-  int check = testCheck(board, kingCoords, checkCoords, turn);
-  
-  printf("In check? %d\nCheck from: %d, %d\n", check, checkCoords[0], checkCoords[1]);
-  printf("King Coords: %d, %d\n", kingCoords[0], kingCoords[1]);
-  
-  int dir = testDirection(kingCoords, checkCoords);
-  printf("Direction: %d\n", dir);
-  
-  getCheckSquares(board, kingCoords, checkCoords, checkSquares);
-  
-  int mate = testMate(board, boardMove, checkSquares, turn);
-  
-  printf("Mate? %d\n", mate);
-  
-  // engine testing
-  
-  int score = scoreDif(board, boardMove, turn);
-  printf("Points: %d\n", score);
-  
-  //int botMove = bestMove(board, boardMove, board3, turn);
-  //printf("Bot Move: %d\n", botMove);
-  
-  int botMove2; /*= engineRecursion(board, boardMove, board3, turn, 1);*/
-  //printf("Bot Move (recursion): %d\n", botMove2);
-
-  printBoardChar(board, turn);
-  
-  // engine playing itself
-  
-  int currPos[2];
-  int currMove[2];
-  int playerInput;
-  
-  // if input is made 0, engine plays itself
-  int input = 0;
-  
-  // example of player playing engine, no error check or prompts. Example move: 1213 -> pawn A2 to A3
-  //botMove2 = engineRecursion(board, boardMove, board3, turn, 2);
-  /*
-  moves(board, boardMove, moveList, turn);
-  
-  i=0;
-  while(moveList[i] != 0)
-  {
-    printf("%d\n", moveList[i]);
-    i++;
-  }
-  */
-  //printBoardNum(board);
-  
-  //botMove2 = engineRecursion(board, boardMove, board3, turn+1, 0);
-  
-  
-  
-  while((botMove2 != 0) && (turn < 350))
-  {
-    botMove2 = engineRecursion(board, boardMove, board3, turn, 1);
     
-    if(botMove2 > 0)
+    
+  else //Else statement added to allow for user selection
     {
+    */
     
-      currPos[0] = 0;
-      currPos[1] = 0;
-      currMove[0] = 0;
-      currMove[1] = 0;
+    
+    
+    
+    
+    
+    while (userSelect == 1 /*&& win condition not met*/)
+    {
+    //PvE so that the player can participate in their own gameplay. THIS STILL OPERATES OFF OF ENGINE RECURSION USER INPUTS NOT ADDED YET
+      clock_t start, end;
+      double cpu_time_used;
+      start = clock();
+    
+      //initialize board
       
-      if((turn % 2 == 1) || (input == 0))
+    	int board[BOARD][BOARD];
+      int boardMove[BOARD][BOARD];
+      int board3[BOARD][BOARD];
+      int checkSquares[BOARD][BOARD];
+    	int i;
+    	int j;	
+    
+    	for(i=0; i<BOARD; i++)
+    	{
+    		for(j=0; j<BOARD; j++)
+    		{
+    			board[i][j] = 0;
+          board3[i][j] = 0;
+          boardMove[i][j] = 0;
+          checkSquares[i][j] = 0;
+    		}
+    	}
+      
+      // list of all legal moves
+      int moveList[250];
+      for(i=0; i<250; i++)
       {
-        intToMove(botMove2, currPos, currMove);
+        moveList[i] = 0;
+      }
+    
+    	makeBoard(board);
+      updateBoard(boardMove, board);
+      
+      int turn = 1;
+      
+      int checkCoords[2];
+      checkCoords[0] = 0;
+      checkCoords[1] = 0;
+      
+      int kingCoords[2];
+      kingCoords[0] = 0;
+      kingCoords[1] = 0;
+      
+      int check = testCheck(board, kingCoords, checkCoords, turn);
+      
+      printf("In check? %d\nCheck from: %d, %d\n", check, checkCoords[0], checkCoords[1]);
+      printf("King Coords: %d, %d\n", kingCoords[0], kingCoords[1]);
+      
+      int dir = testDirection(kingCoords, checkCoords);
+      printf("Direction: %d\n", dir);
+      
+      getCheckSquares(board, kingCoords, checkCoords, checkSquares);
+      
+      int mate = testMate(board, boardMove, checkSquares, turn);
+      
+      printf("Mate? %d\n", mate);
+      
+      // engine testing
+      
+      int score = scoreDif(board, boardMove, turn);
+      printf("Points: %d\n", score);
+
+      
+      int botMove2;
+
+    
+      printBoardChar(board, turn);
+      
+      // engine playing itself
+      
+      int currPos[2];
+      int currMove[2];
+      int playerInput;
+      
+      // if input is made 0, engine plays itself
+      int input = 0;
+      
+      
+      while((botMove2 != 0) && (turn < 350))
+      {
+        botMove2 = engineRecursion(board, boardMove, board3, turn, 1);
+        
+        if(botMove2 > 0)
+        {
+        
+          currPos[0] = 0;
+          currPos[1] = 0;
+          currMove[0] = 0;
+          currMove[1] = 0;
+          
+          if((turn % 2 == 1) || (input == 0))
+          {
+            intToMove(botMove2, currPos, currMove);
+          }
+          else
+          {
+            scanf("%d", &playerInput);
+            intToMove(playerInput, currPos, currMove);
+          }
+          
+          makeMoveTest(board, currPos, currMove);
+          printf("Bot Move (recursion): %d\n", botMove2);
+          
+          printBoardChar(board, 1);
+          turn++;
+        }
+      }
+      
+      int pos[2];
+      int pos2[2];
+    
+      pos[0] = 5;
+      pos[1] = 2;
+      
+    
+      end = clock();
+      cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken: %f seconds\n", cpu_time_used);
+      
+      //Asks the user for another game or end program. DOES NOT WORK PAST THE SECOND GAME ITERATION
+      printf("Shall I play again (1 for n, 2 for y)?\n");
+      errCheck = scanf("%d", &userSelect);
+      }
+    
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////// 
+    
+    
+    
+    
+    while (userSelect == 2)
+    {
+    //Engine running against itself. Will run in a while loop, but instantly wins. I assume that the actual board is not getting reset
+    {
+      clock_t start, end;
+      double cpu_time_used;
+      start = clock();
+    
+      //initialize board
+      
+    	int board[BOARD][BOARD];
+      int boardMove[BOARD][BOARD];
+      int board3[BOARD][BOARD];
+      int checkSquares[BOARD][BOARD];
+    	int i;
+    	int j;	
+    
+    	for(i=0; i<BOARD; i++)
+    	{
+    		for(j=0; j<BOARD; j++)
+    		{
+    			board[i][j] = 0;
+          board3[i][j] = 0;
+          boardMove[i][j] = 0;
+          checkSquares[i][j] = 0;
+    		}
+    	}
+      
+      // list of all legal moves
+      int moveList[250];
+      for(i=0; i<250; i++)
+      {
+        moveList[i] = 0;
+      }
+    
+    	makeBoard(board);
+      updateBoard(boardMove, board);
+      
+      int turn = 1;
+      
+      // mate in 2
+      
+      //clear board
+      /*
+      for(i=1; i<9; i++)
+      {
+        for(j=1; j<9; j++)
+        {
+          board[i][j] = 0;
+        }
+      }
+      
+      board[6][8] = -7;
+      board[1][4] = 7;
+      
+      board[3][3] = -2;
+      */
+      
+      /*
+      board[1][2] = 5;
+      board[1][6] = 3;
+      board[1][7] = 2;
+      board[3][2] = -1;
+      board[3][5] = 7;
+      board[4][1] = -5;
+      board[4][2] = 1;
+      board[4][3] = 1;
+      board[4][7] = -1;
+      board[6][1] = -3;
+      board[6][2] = -1;
+      board[6][8] = 5;
+      board[7][4] = -7;
+      board[7][5] = 1;
+      board[8][8] = 3;
+      */
+      
+    	//printBoardChar(board, turn);
+      
+      int checkCoords[2];
+      checkCoords[0] = 0;
+      checkCoords[1] = 0;
+      
+      int kingCoords[2];
+      kingCoords[0] = 0;
+      kingCoords[1] = 0;
+      
+      int check = testCheck(board, kingCoords, checkCoords, turn);
+      
+      printf("In check? %d\nCheck from: %d, %d\n", check, checkCoords[0], checkCoords[1]);
+      printf("King Coords: %d, %d\n", kingCoords[0], kingCoords[1]);
+      
+      int dir = testDirection(kingCoords, checkCoords);
+      printf("Direction: %d\n", dir);
+      
+      getCheckSquares(board, kingCoords, checkCoords, checkSquares);
+      
+      int mate = testMate(board, boardMove, checkSquares, turn);
+      
+      printf("Mate? %d\n", mate);
+      
+      // engine testing
+      
+      int score = scoreDif(board, boardMove, turn);
+      printf("Points: %d\n", score);
+      
+      //int botMove = bestMove(board, boardMove, board3, turn);
+      //printf("Bot Move: %d\n", botMove);
+      
+      int botMove2; /*= engineRecursion(board, boardMove, board3, turn, 1);*/
+      //printf("Bot Move (recursion): %d\n", botMove2);
+    
+      printBoardChar(board, turn);
+      
+      // engine playing itself
+      
+      int currPos[2];
+      int currMove[2];
+      int playerInput;
+      
+      // if input is made 0, engine plays itself
+      int input = 0;
+      
+      // example of player playing engine, no error check or prompts. Example move: 1213 -> pawn A2 to A3
+      //botMove2 = engineRecursion(board, boardMove, board3, turn, 2);
+      /*
+      moves(board, boardMove, moveList, turn);
+      
+      i=0;
+      while(moveList[i] != 0)
+      {
+        printf("%d\n", moveList[i]);
+        i++;
+      }
+      */
+      //printBoardNum(board);
+      
+      //botMove2 = engineRecursion(board, boardMove, board3, turn+1, 0);
+      
+      
+      
+      while((botMove2 != 0) && (turn < 350))
+      {
+        botMove2 = engineRecursion(board, boardMove, board3, turn, 1);
+        
+        if(botMove2 > 0)
+        {
+        
+          currPos[0] = 0;
+          currPos[1] = 0;
+          currMove[0] = 0;
+          currMove[1] = 0;
+          
+          if((turn % 2 == 1) || (input == 0))
+          {
+            intToMove(botMove2, currPos, currMove);
+          }
+          else
+          {
+            scanf("%d", &playerInput);
+            intToMove(playerInput, currPos, currMove);
+          }
+          
+          makeMoveTest(board, currPos, currMove);
+          printf("Bot Move (recursion): %d\n", botMove2);
+          
+          printBoardChar(board, 1);
+          turn++;
+        }
+      }
+      
+      int pos[2];
+      int pos2[2];
+    
+      pos[0] = 5;
+      pos[1] = 2;
+      
+      /*
+      pos2[0] = 5;
+      pos2[1] = 3;
+      int legalTest = checkLegalTest(board, boardMove, pos, pos2, turn);
+      
+      printf("legal? %d\n", legalTest);
+      */
+    
+    
+      
+      /*
+      int direction[2] = {0, 0};
+      int pieceX = 5;
+      int pieceY = 6;
+      
+      pinDirection(board, boardMove, pieceX, pieceY, turn, direction);
+      
+      printf("direction to pinning piece: %d, %d\n", direction[0], direction[1]);
+      */
+      
+      //rayLegal(board, moveList, pos, 1, 1, 1);
+      
+      
+    
+      end = clock();
+      cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+      printf("Time taken: %f seconds\n", cpu_time_used);
+      
+      //Asks the user for another game or end program. DOES NOT WORK PAST THE FIRST GAME ITERATION
+      printf("Shall I play again (1 for n, 2 for y)?\n");
+      errCheck = scanf("%d", &userSelect);
+      }
+      /*
+      if (errCheck != 1)
+      {
+        printf("Please enter a valid integer and try again\n");
+        
+        while (errCheck != 1) //A while loop is used to ensure that the user inputs a proper value
+        errCheck = scanf("%d", &userSelect);
       }
       else
       {
-        scanf("%d", &playerInput);
-        intToMove(playerInput, currPos, currMove);
+        return 0;
       }
-      
-      makeMoveTest(board, currPos, currMove);
-      printf("Bot Move (recursion): %d\n", botMove2);
-      
-      printBoardChar(board, 1);
-      turn++;
+      */
     }
-  }
-  
-  int pos[2];
-  int pos2[2];
-
-  pos[0] = 5;
-  pos[1] = 2;
-  
-  /*
-  pos2[0] = 5;
-  pos2[1] = 3;
-  int legalTest = checkLegalTest(board, boardMove, pos, pos2, turn);
-  
-  printf("legal? %d\n", legalTest);
-  */
-
-
-  
-  /*
-  int direction[2] = {0, 0};
-  int pieceX = 5;
-  int pieceY = 6;
-  
-  pinDirection(board, boardMove, pieceX, pieceY, turn, direction);
-  
-  printf("direction to pinning piece: %d, %d\n", direction[0], direction[1]);
-  */
-  
-  //rayLegal(board, moveList, pos, 1, 1, 1);
-  
-  
-
-  end = clock();
-  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-  printf("Time taken: %f seconds\n", cpu_time_used);
-
-	return 0;
+  	return 0;
 }

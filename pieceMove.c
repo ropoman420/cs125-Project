@@ -16,7 +16,7 @@ void pieceMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOAR
   while(validMove == 0)
   {
     printf("This is not a legal move. Please try again.\n");
-    validMove = legalMove(i, j, newX, newY, turn, board[][], /*what other variables?*/);
+    validMove = legalMove(i, j, newX, newY, turn, board[][], /*what other variables?*/);  //repeats the legalMove function until a legal input is made
   }
   
 
