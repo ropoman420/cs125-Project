@@ -150,12 +150,25 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
   kingCoord[0] = kingPos[0];
   kingCoord[1] = kingPos[1];
   
+  int pieceKnight = 0;
+  
   // test for check
   for(i=1; i<=8; i++)
   {
     // uses rayLos at king position to search for checking pieces
     piece = rayLos(board, kingPos, piecePos, i, 0);
     piece1 = rayLos(board, kingPos, piecePos1, (i * -1), 0);
+    
+    // knight checking piece?
+    
+    pieceKnight = rayKnight(board, kingPos, piecePos, i, 0);
+    
+    if(pieceKnight == -2 * type)
+    {
+      check = 1;
+      checkCoord[0] = piecePos[0];
+      checkCoord[1] = piecePos[1];
+    }
     
     // rayKnight functionality will be added here
     

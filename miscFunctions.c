@@ -59,7 +59,7 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
       dj = 2;
       break;
     default:
-      printf("Invalid Knight Movement");
+      //printf("Invalid Knight Movement");
       break;
   }
   
@@ -71,13 +71,15 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
     
   if( (y > 8) || (y < 1) || (x > 8) || (x < 1) )
   {
-    printf("The move is out of bounds please select another: ");
+    //printf("The move is out of bounds please select another: ");
   }
   else 
   {
+    coordEnd[0] = y;
+    coordEnd[1] = x;
     currPiece = board[x][y];
   }
-
+  return currPiece;
 }
 
 int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction, int cmp)

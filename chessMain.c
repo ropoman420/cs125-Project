@@ -62,29 +62,31 @@ int main()
     }
   }
   
-  board[1][1] = 7;
-  board[6][7] = -7;
+  board[6][8] = -7;
+  board[1][4] = 7;
   
-  board[4][1] = 5;
-  //board[6][2] = 5;
-  
-  board[6][5] = -5;
-  
-  board[4][3] = -6;
+  board[3][3] = -2;
   */
-  
-  // en passant testing
-  // 4 represents pawn capturable by en passant, printed as "-"
   
   /*
-  board[2][5] = 0;
-  board[5][1] = -6;
-  board[1][3] = -5;
-  board[1][7] = -5;
-  board[3][5] = 1;
+  board[1][2] = 5;
+  board[1][6] = 3;
+  board[1][7] = 2;
+  board[3][2] = -1;
+  board[3][5] = 7;
+  board[4][1] = -5;
+  board[4][2] = 1;
+  board[4][3] = 1;
+  board[4][7] = -1;
+  board[6][1] = -3;
+  board[6][2] = -1;
+  board[6][8] = 5;
+  board[7][4] = -7;
+  board[7][5] = 1;
+  board[8][8] = 3;
   */
   
-	printBoardChar(board, turn);
+	//printBoardChar(board, turn);
   
   int checkCoords[2];
   checkCoords[0] = 0;
@@ -119,7 +121,7 @@ int main()
   int botMove2; /*= engineRecursion(board, boardMove, board3, turn, 1);*/
   //printf("Bot Move (recursion): %d\n", botMove2);
 
-  //printBoardChar(board, turn);
+  printBoardChar(board, turn);
   
   // engine playing itself
   
@@ -128,15 +130,33 @@ int main()
   int playerInput;
   
   // if input is made 0, engine plays itself
-  int input = 1;
+  int input = 0;
   
   // example of player playing engine, no error check or prompts. Example move: 1213 -> pawn A2 to A3
-  while((botMove2 != 0) && (turn < 100))
+  //botMove2 = engineRecursion(board, boardMove, board3, turn, 2);
+  /*
+  moves(board, boardMove, moveList, turn);
+  
+  i=0;
+  while(moveList[i] != 0)
+  {
+    printf("%d\n", moveList[i]);
+    i++;
+  }
+  */
+  //printBoardNum(board);
+  
+  //botMove2 = engineRecursion(board, boardMove, board3, turn+1, 0);
+  
+  
+  
+  while((botMove2 != 0) && (turn < 350))
   {
     botMove2 = engineRecursion(board, boardMove, board3, turn, 1);
     
     if(botMove2 > 0)
     {
+    
       currPos[0] = 0;
       currPos[1] = 0;
       currMove[0] = 0;
@@ -160,8 +180,6 @@ int main()
     }
   }
   
-
-  
   int pos[2];
   int pos2[2];
 
@@ -177,7 +195,6 @@ int main()
   */
 
 
-  moves(board, boardMove, moveList, turn);
   
   /*
   int direction[2] = {0, 0};
@@ -190,11 +207,6 @@ int main()
   */
   
   //rayLegal(board, moveList, pos, 1, 1, 1);
-  
-  for(i=0; i<40; i++)
-  {
-    printf("%d\n", moveList[i]);
-  }
   
   
 

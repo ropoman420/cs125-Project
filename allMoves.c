@@ -109,6 +109,9 @@ void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[],
     i++;
   }
   
+  int board3[BOARD][BOARD];
+  int checkSquares[BOARD][BOARD];
+  
   // add all legal moves to list
   
   // outer loops find pieces to move
@@ -128,6 +131,8 @@ void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[],
   
   int check = testCheck(board, kingCoords, checkCoords, turn);
   
+  updateBoard(boardMove, board);
+
   // adding king moves to list
   for(i=-1; i<=1; i++)
   {
@@ -143,16 +148,29 @@ void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[],
       }
     }
   }
-  
+
   if(check == 1)
   {
     // find all moves that can block check
+    
+    for(i=0; i<BOARD; i++)
+    {
+      for(j=0; j<BOARD; j++)
+      {
+        
+        //board3[i][j] = board[i][j];
+        checkSquares[i][j] = 0;
+      }
+    }
+    getCheckSquares(board, kingCoords, checkCoords, checkSquares);
+    findMoves(board, boardMove, checkSquares, moveList, turn);
     
   }
   else
   {
     // seach board for every piece of correct type
     i2 = 1;
+    //printf("2\n");
     for(i=7; i>=0; i--)
     {
       j2 = 1;
@@ -161,19 +179,73 @@ void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[],
         //if movable piece at coordinates
         if(board[i2][j2] * type > 0)
         {
-          printf("%d, %d \n", j2, i2);
+          //printf("%d, %d \n", j2, i2);
           
           positivePiece = board[i2][j2];
           piecePos[0] = j2;
           piecePos[1] = i2;
-          
-          pinDirection(board, boardMove, j2, i2, turn, direction);
+          //printf("%d, %d\n", j2, i2);
+          if(makePos(positivePiece) != 7)
+          {
+            pinDirection(board, boardMove, j2, i2, turn, direction);
+          }
+          //printf("%d, %d\n", j2, i2);
 
           switch(makePos(positivePiece))
           {
             case 1:
               // pawns
-            
+              
+              // moving forward
+              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] != 0) && (direction[0] == 0)))
+              {
+                if(board[i2+type][j2] == 0)
+                {
+                  moveTo[0] = piecePos[0];
+                  moveTo[1] = piecePos[1] + type;
+                
+                  move = moveToInt(piecePos, moveTo);
+                  addToList(moveList, move);
+                  
+                  // moving forward 2?
+                  if((board[i2-2][j2] == 0) && (type == -1) && (i2 == 7))
+                  {
+                    moveTo[1] -= 1;
+                    move = moveToInt(piecePos, moveTo);
+                    addToList(moveList, move);
+                  }
+                  
+                  if((board[i2+2][j2] == 0) && (type == 1) && (i2 == 2))
+                  {
+                    moveTo[1] += 1;
+                    move = moveToInt(piecePos, moveTo);
+                    addToList(moveList, move);
+                  }
+                }
+              }
+              
+              // capturing diagonally
+              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] == 1) && (direction[0] == 1)) || ((direction[1] == -1) && (direction[0] == -1)))
+              {
+                if((board[i2+type][j2+type]*type < 0) && (board[i2+type][j2+type] != 9))
+                {
+                  moveTo[0] = piecePos[0] + type;
+                  moveTo[1] = piecePos[1] + type;
+                  move = moveToInt(piecePos, moveTo);
+                  addToList(moveList, move);
+                }
+              }
+              
+              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] == 1) && (direction[0] == -1)) || ((direction[1] == -1) && (direction[0] == 1)))
+              {
+                 if((board[i2+type][j2-type]*type < 0) && (board[i2+type][j2-type] != 9))
+                {
+                  moveTo[0] = piecePos[0] - type;
+                  moveTo[1] = piecePos[1] + type;
+                  move = moveToInt(piecePos, moveTo);
+                  addToList(moveList, move);
+                }
+              }
               break;
             case 2:
               // knights

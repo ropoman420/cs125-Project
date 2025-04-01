@@ -4,7 +4,7 @@
 
 #define BOARD 10
 
-int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BOARD][BOARD], int turn)
+int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BOARD][BOARD], int moveList[], int turn)
 {
   int type;
   
@@ -26,9 +26,7 @@ int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BO
   int k;
   int squareAttacked;
   int currCoord[2];
-  int defender[2];
-  defender[0] = 0;
-  defender[1] = 0;
+  int defender[2] = {0, 0};
   
   // this function requires a second copy of the board
   int board3[BOARD][BOARD];
@@ -54,16 +52,13 @@ int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BO
   int kingX = enemyKing[0];
   int kingY = enemyKing[1];
   
-   int kingX2 = king[0];
+  int kingX2 = king[0];
   int kingY2 = king[1];
   
-  int dummy[2];
-  dummy[0] = 0;
-  dummy[1] = 0;
+  int dummy[2] = {0, 0};
+  int dummyKing[2] = {0, 0};
   
-  int dummyKing[2];
-  dummyKing[0] = 0;
-  dummyKing[1] = 0;
+  int movingTo[2] = {0, 0};
   
   int breakCondition = 0;
   
@@ -80,6 +75,9 @@ int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BO
       {
         break;
       }
+      
+      movingTo[0] = j;
+      movingTo[1] = i;
       
       if(moves[i][j] != 0)
       {
@@ -141,11 +139,15 @@ int findMoves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moves[BO
             if(pinned == 0)
             {
               canMove++;
-              breakCondition = 1;
+              
+              addToList(moveList, moveToInt(defender, movingTo));
+              
+              boardMove[defender[1]][defender[0]] = 9;
+              //breakCondition = 1;
               //printf("Piece found, loop terminated\n");
               //printf("un-pinned piece at: %d, %d\n", defender[0], defender[1]);
               
-              break;
+              //break;
             }
             else
             {

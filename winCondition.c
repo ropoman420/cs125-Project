@@ -157,7 +157,14 @@ int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares
   if((doubleCheck == 0) && (kingMoves == 0) && (check == 1))
   {
     // check to see if any piece can block
-    blockCheck = findMoves(board, board2, checkSquares, turn);
+    int moveList[250];
+    
+    for(i=0; i<250; i++)
+    {
+      moveList[i] = 0;
+    }
+    
+    blockCheck = findMoves(board, board2, checkSquares, moveList, turn);
     
     if(blockCheck == 0)
     {

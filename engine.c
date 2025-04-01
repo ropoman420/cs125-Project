@@ -93,16 +93,15 @@ int scoreDif(int board[BOARD][BOARD], int board2[BOARD][BOARD], int turn)
   return dif;
 }
 
-int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn, int startX, int startY, int *maxVal)
+int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn)
 {
+
   int i;
   int j;
   int move = 0;
   int curVal = 0;
   int type;
-  int legal;
-  *maxVal = -1000;
-  //int legal;
+  int maxVal = -1000;
   
   if(turn % 2 == 0)
   {
@@ -112,12 +111,9 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
   {
     type = 1;
   }
-  
-  int moveFrom[2];
-  moveFrom[0] = startX;
-  moveFrom[1] = startY;
-  
-  int moveTo[2];
+
+  int moveFrom[2] = {0, 0};
+  int moveTo[2] = {0, 0};
   
   // checkmate variables
   int checkCoords[2];
@@ -131,71 +127,81 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
       checkSquares[i][j] = 0;
     }
   }
-  
+
   int check = 0;
   int mate = 0;
   
-  for(i=1; i<9; i++)
+  int moveList[250];
+  int dummyMoveList[250];
+  
+  for(i=0; i<250; i++)
   {
-    for(j=1; j<9; j++)
-    {
-      if(board[i][j] * type <= 0)
-      {
-        moveTo[0] = j;
-        moveTo[1] = i;
-        
-        updateBoard(boardMove, board);
-
-        legal = checkLegalTest(boardMove, board3, moveFrom, moveTo, turn);
-        
-        if(legal == 1)
-        {
-          //printf("legal: %d\n", legal);
-          //legal = 1;
-        
-          // try making move
-          makeMoveTest(boardMove, moveFrom, moveTo);
-          //printBoardChar(boardMove);
-          
-          // oponent in mate?
-          kingCoords[0] = 0;
-          kingCoords[1] = 0;
-          
-          checkCoords[0] = 0;
-          checkCoords[1] = 0;
-          
-          makeZero(checkSquares);
-          
-          //printf("working...%d, %d\n", i, j);
-          check = testCheck(boardMove, kingCoords, checkCoords, (turn+1));
-          getCheckSquares(boardMove, kingCoords, checkCoords, checkSquares);
-          mate = testMate(boardMove, board3, checkSquares, (turn+1));
-          
-          curVal = scoreDif(boardMove, board3, turn);
-          
-          // ensures that a mate is valued the highest
-          
-          if(mate == 1)
-          {
-            curVal = 1000;
-          }
-          
-          updateBoard(board3, boardMove);
-          
-          // updates maximum move result value
-          if(curVal >= *maxVal)
-          {
-            *maxVal = curVal;
-            move = moveToInt(moveFrom, moveTo);
-          }
-        }
-      }
-    }
+    moveList[i] = 0;
+    dummyMoveList[i] = 0;
   }
+//printf("1\n");
+//printBoardNum(board);
+  moves(board, boardMove, moveList, turn);
+//printf("2\n");
+  int tempMove = 0;
 
+  i=0;
+  while(moveList[i] != 0)
+  {  
+    tempMove = moveList[i];
+    updateBoard(boardMove, board);
+    
+    intToMove(tempMove, moveFrom, moveTo);
+  
+    // try making move
+    //printf("%d\n", tempMove);
+    //printf("%d, %d; %d, %d\n", moveFrom[0], moveFrom[1], moveTo[0], moveTo[1]);
+    makeMoveTest(boardMove, moveFrom, moveTo);
+    
+    //printBoardChar(boardMove);
+    
+    // oponent in mate?
+    kingCoords[0] = 0;
+    kingCoords[1] = 0;
+    
+    checkCoords[0] = 0;
+    checkCoords[1] = 0;
+    
+    makeZero(checkSquares);
+    
+    //printf("working...%d, %d\n", i, j);
+    check = testCheck(boardMove, kingCoords, checkCoords, (turn+1));
+    if(check == 1)
+    {
+      getCheckSquares(boardMove, kingCoords, checkCoords, checkSquares);
+      mate = testMate(boardMove, board3, checkSquares, (turn+1));
+    }
+    
+    curVal = scoreDif(boardMove, board3, turn);
+    //curVal = 40;
+    
+    // ensures that a mate is valued the highest
+    
+    
+    if(mate == 1)
+    {
+      curVal = 1000;
+    }
+    
+    updateBoard(board3, boardMove);
+    
+    // updates maximum move result value
+    if(curVal >= maxVal)
+    {
+      maxVal = curVal;
+      move = moveToInt(moveFrom, moveTo);
+      //printf("%d\n", move);
+    }
+    i++;
+  }
   return move;
 }
-
+/*
 int bestMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn)
 {
   int type;
@@ -238,4 +244,4 @@ int bestMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BO
   }
   
   return move;
-}
+}*/
