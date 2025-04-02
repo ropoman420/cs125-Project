@@ -42,7 +42,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
     type = 1;
   }
   
-  // check variables
+  //Check variables
   int check = 0;
   int kingCoords[2];
   int checkCoords[2];

@@ -23,17 +23,24 @@ int main()
   printf("Shall we play a game (1 for PvE, 2 for EvE)?\n");
   errCheck = scanf("%d", &userSelect);
   
-  /*if (errCheck != 1)
+  if (errCheck != 1)
     {
-      printf("Please enter a valid integer and try again\n");
+      printf("Please enter a valid input and try again\n");
     }
     
     
-  else //Else statement added to allow for user selection
+  else //Else statement added for error-checking. Runs if scanf above completes successfully
     {
-    */
     
     
+    if (userSelect < 1 || userSelect > 2)
+    {
+      printf("Please enter a valid integer and try again\n");
+    }
+    else
+    {
+      printf("");
+    }
     
     
     
@@ -52,9 +59,17 @@ int main()
       int board3[BOARD][BOARD];
       int checkSquares[BOARD][BOARD];
     	int i;
-    	int j;	
+    	int j;
+      int turn = 1;	  //NEW LINE OF CODE
+     
+      /*
+      makeBoard(board);
+      updateBoard(boardMove, board);
+      */                         //IF THIS IS UNCOMMENTED IT GIVES A SEG FAULT, MUST HAPPEN AFTER for LOOP APPARENTLY 4-1-25
     
-    	for(i=0; i<BOARD; i++)
+    	
+      //This conditional sets every position value to 0 so as to initialize the board
+      for(i=0; i<BOARD; i++)
     	{
     		for(j=0; j<BOARD; j++)
     		{
@@ -72,10 +87,14 @@ int main()
         moveList[i] = 0;
       }
     
+      
     	makeBoard(board);
       updateBoard(boardMove, board);
       
-      int turn = 1;
+      
+      turn = 1;
+      //printBoardChar(board, turn);
+      
       
       int checkCoords[2];
       checkCoords[0] = 0;
@@ -116,7 +135,12 @@ int main()
       int currMove[2];
       int playerInput;
       
-      // if input is made 0, engine plays itself
+      //If input is made 2, engine plays itself  
+      /*THERE IS SOMETHING WRONG WITH HOW INPUT GETS PASSED TO TWO SEPARATE BOARDS. 
+      I THINK THE TWO BOARDS ARE GETTING DIFFERENT VARIABLE SETS AND THIS IS CAUSING
+      AN ISSUE WHERE THE PROGRAM WILL ONLY LET YOU EXIT AFTER BOTH BOARD OPTIONS HAVE
+      BEEN PLAYED  4-1-25
+      */
       int input = 0;
       
       
@@ -189,6 +213,7 @@ int main()
       int checkSquares[BOARD][BOARD];
     	int i;
     	int j;	
+      int turn = 1;	  //NEW LINE OF CODE  4-1-25
     
     	for(i=0; i<BOARD; i++)
     	{
@@ -211,7 +236,7 @@ int main()
     	makeBoard(board);
       updateBoard(boardMove, board);
       
-      int turn = 1;
+      turn = 1;
       
       // mate in 2
       
@@ -394,6 +419,8 @@ int main()
         return 0;
       }
       */
+    }
+    
     }
   	return 0;
 }

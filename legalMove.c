@@ -1,13 +1,19 @@
 //This function will check the legality of a player's desired move. 
 //RETURN 1 means that the move IS legal. RETURN 0 means the move is NOT legal
 
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #define BOARD 10
 
 
 
-int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2] /*Are these necessary?, int coord[2], int newCoord[2], */)
+int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
 {  
   int pieceVal;  //This is the piece's value that is passed in initially into the function
+  int legal = 0;
+  int type;
   
   
   //These four values build the matrix to store positional data for when it is passed into the LoS function
@@ -16,6 +22,7 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
   
   int x2 = newX;
   int y2 = newY;
+  int dummyRay;
   
   //This conditional ensures that the King piece cannot be captured
   if((board[y2][x2] != 7) && board[y2][x2] != -7)
@@ -37,6 +44,9 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
   }
   
   
+  int x = moveFrom[0];
+  int y = moveFrom[1];
+  
   
   //This conditional sets whose turn it is and gets used for the technicalities of piece movement during the large switch statement
   if(turn % 2 == 0)
@@ -47,6 +57,12 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
   {
     type = 1;
   }
+  
+  int pieceOfInterest = board[y][x];
+  pieceOfInterest = makePos(pieceOfInterest);
+  
+  int disx;
+  int disy;
   
     
   //The switch statement selects a case determined by piece value (depending on which piece is selected)
