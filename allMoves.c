@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define BOARD 10
 
@@ -83,7 +84,7 @@ void pinDirection(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int piec
   }
 }
 
-void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], int turn)
+int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], int turn)
 {
   int type;
   
@@ -148,7 +149,21 @@ void moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[],
       }
     }
   }
-
+  
+  // if doublecheck, exit before checking moves for non-king pieces
+  if(check == 1)
+  {
+    boardMove[checkCoords[1]][checkCoords[0]] = 0;
+    int doublecheck = testCheck(board, kingCoords, checkCoords, turn);
+    
+    if(doublecheck == 1)
+    {
+      return 0;
+    }
+    
+    updateBoard(boardMove, board);
+  }
+  
   if(check == 1)
   {
     // find all moves that can block check

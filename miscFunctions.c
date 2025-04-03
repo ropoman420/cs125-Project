@@ -19,7 +19,7 @@ int makePos(int value)
 
 }
 
-int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction, int cmp)
+int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction)
 {
   int di = 0;
   int dj = 0;
@@ -75,9 +75,9 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
   }
   else 
   {
-    coordEnd[0] = y;
-    coordEnd[1] = x;
-    currPiece = board[x][y];
+    coordEnd[0] = x;
+    coordEnd[1] = y;
+    currPiece = board[y][x];
   }
   return currPiece;
 }

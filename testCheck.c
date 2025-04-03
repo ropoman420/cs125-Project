@@ -129,6 +129,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
   int piece1;
   int piecePos[2];
   int piecePos1[2];
+  int piecePos2[2];
   int check = 0;
   int kingPos[2];
   
@@ -161,16 +162,14 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
     
     // knight checking piece?
     
-    pieceKnight = rayKnight(board, kingPos, piecePos, i, 0);
-    
+    pieceKnight = rayKnight(board, kingPos, piecePos2, i, 0);
+    //printf("%d\n", pieceKnight);
     if(pieceKnight == -2 * type)
     {
       check = 1;
-      checkCoord[0] = piecePos[0];
-      checkCoord[1] = piecePos[1];
+      checkCoord[0] = piecePos2[0];
+      checkCoord[1] = piecePos2[1];
     }
-    
-    // rayKnight functionality will be added here
     
     // bishop or queen
     if(((i % 2) == 0) && ((piece == (-3 * type)) || (piece == (-6 * type))))
