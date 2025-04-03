@@ -3,20 +3,62 @@
 
 #define BOARD 10
 
-//Move piece function
+// rudimentary move piece function
+
+void removePassant(int board[BOARD][BOARD], int type)
+{
+  int i, j;
+  
+  for(i=1; i<9; i++)
+  {
+    for(j=1; j<9; j++)
+    {
+      if(board[i][j] == (type * 4))
+      {
+        board[i][j] = 0;
+      }
+    }
+  }
+}
 
 void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
 {
-
   int x1 = moveFrom[0];
   int y1 = moveFrom[1];
   
   int x2 = moveTo[0];
   int y2 = moveTo[1];
   
+  int piece = board[y1][x1];
+  int type = piece / makePos(piece);
+  
+  // ensures en passant is not possible 1+ moves after pawn was moved
+  removePassant(board, type);
+  
   if((board[y2][x2] != 7) && board[y2][x2] != -7)
   {
+    // removing en passant - captured pawn
+    if((board[y2][x2] == (-4*type)) && (board[y1][x1] == type))
+    {
+      board[y1][x2] = 0;
+    }
+  
+    // piece placed in second position
     board[y2][x2] = board[y1][x1];
+    
+    // pawn promotion
+    if(((y2 == 8) || (y2 == 1)) && ((board[y2][x2] == 1) || (board[y2][x2] == -1)))
+    {
+      board[y2][x2] *= 6;
+    }
+    
+    // adds 4 to represent capturable pawn via en passant, if a pawn moves 2 spaces
+    if(((board[y2][x2] == 1) || (board[y2][x2] == -1)) && (makePos(y2-y1) == 2))
+    {
+      board[y2-board[y2][x2]][x2] = board[y2][x2] * 4;
+    }
+    
+    //piece removed from first position
     board[y1][x1] = 0;
   }
 }
@@ -43,7 +85,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
     type = 1;
   }
   
-  //Check variables
+  // check variables
   int check = 0;
   int kingCoords[2];
   int checkCoords[2];

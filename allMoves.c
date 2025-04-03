@@ -126,6 +126,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   
   int kingCoords[2] = {0, 0};
   int checkCoords[2] = {0, 0};
+  int doubleCheckCoords[2] = {0, 0};
   int kingMove[2] = {0, 0};
   int moveTo[2] = {0, 0};
   int moveToLoc;
@@ -153,8 +154,8 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   // if doublecheck, exit before checking moves for non-king pieces
   if(check == 1)
   {
-    boardMove[checkCoords[1]][checkCoords[0]] = 0;
-    int doublecheck = testCheck(board, kingCoords, checkCoords, turn);
+    boardMove[checkCoords[1]][checkCoords[0]] = 9;
+    int doublecheck = testCheck(boardMove, kingCoords, doubleCheckCoords, turn);
     
     if(doublecheck == 1)
     {
@@ -172,14 +173,12 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
     {
       for(j=0; j<BOARD; j++)
       {
-        
-        //board3[i][j] = board[i][j];
         checkSquares[i][j] = 0;
       }
     }
+    
     getCheckSquares(board, kingCoords, checkCoords, checkSquares);
     findMoves(board, boardMove, checkSquares, moveList, turn);
-    
   }
   else
   {
