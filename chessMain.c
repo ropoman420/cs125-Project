@@ -125,7 +125,7 @@ int main()
         
         printf("Mate? %d\n", mate);
         
-        // engine testing
+        //Engine testing
         
         int score = scoreDif(board, boardMove, turn);
         printf("Points: %d\n", score);
@@ -144,7 +144,7 @@ int main()
         int input = 1;
         
         
-        while(/*(botMove2 != 0) && */(turn < 350))  //THIS WHILE LOOP WAS EDITED TO SEE IF THE ROBOT WOULD PLAY AS BLACK
+        while ((botMove2 != 0) && (turn < 350))  //THIS WHILE LOOP WAS EDITED TO SEE IF THE ROBOT WOULD PLAY AS BLACK
         {
           botMove2 = engineRecursion(board, boardMove, board3, turn, 1);
           
@@ -156,11 +156,11 @@ int main()
             currMove[0] = 0;
             currMove[1] = 0;
             
-            if((turn % 2 == 1) || (input == 0))
+            if((turn % 2 == 0) || (input == 0))
             {
               intToMove(botMove2, currPos, currMove);
             }
-            else
+            else    ///////////////////////////////////////////THIS IS ALL OF THE CODE THAT TAKES USER INPUT. IT DOES NOT RETURN A POSITIVE LEGAL CHECK//////////////////////////////////////
             {
               printf("What column is your old piece in (1 for A, 2 for B, etc.)?: \n");
               scanf("%d", &oldX);
@@ -173,18 +173,19 @@ int main()
               scanf("%d", &newY);
               
               moveTo[0] = newX;
-              moveTo[1] = newX;
+              moveTo[1] = newY;
               
               moveFrom[0] = oldX;
               moveFrom[1] = oldY;
+
+              legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn);  ///////////////////////////////////////////LEGAL DOES NOT RETURN 1 EVER
               
               
-              legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn);
               if (legal == 1)
               {
                 makeMoveTest(board, moveFrom, moveTo);
               }
-              else
+              else   ///////////////////////////////////////////THIS IS ALL OF THE CODE THAT TAKES USER INPUT. IT DOES NOT RETURN A POSITIVE LEGAL CHECK//////////////////////////////////////
               {
                 printf("Please make a legal move and try again\n");
                 while (legal != 1)
@@ -206,6 +207,7 @@ int main()
                   moveFrom[1] = oldY;
               
                   legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn);
+                  printf("%d\n", legal);
                 }
               }
               //Take user input
