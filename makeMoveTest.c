@@ -3,10 +3,11 @@
 
 #define BOARD 10
 
-// rudimentary move piece function
+//Move piece function
 
 void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
 {
+
   int x1 = moveFrom[0];
   int y1 = moveFrom[1];
   
