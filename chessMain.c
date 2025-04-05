@@ -10,9 +10,16 @@
 	Class: CS125
 	Assignment: Final Project
 	Date: 3/31/2025
+ 
+ 
+  Notes: Programmed by Caleb Groover, debugged by Ellis,
+  comments by Caleb Groover.
+  
+  This program handles the multitude of functionality that
+  the user can input in order to play the game. It handles
+  multiple instances of error-checking, gameplay options, and
+  allows for a difficulty selection as well. Enjoy!
 */
-
-//Primary "chessMain.c" contributors include Caleb Groover and Roman Warder
 
 
 int main()
@@ -26,8 +33,8 @@ int main()
   int oldY;   /*old y position from user input*/
   int legal;   /*The value used to determine a legal move*/
   int mate = 0;  /*The value used to determine if checkmate has occurred or not*/
-  int difficulty = 1;  /*These two variables set the "depth" of the engine*/
-  int difficulty2 = 1;
+  int difficulty = 1;  
+  int difficulty2 = 1;  /*These two variables set the "depth" of the engine*/
   
   
   //User decides what kind of game they would like to play
@@ -89,7 +96,7 @@ int main()
       
          
          
-          //This conditional sets every position value to 0 so as to initialize the board
+          //This conditional sets every position value to 0 so as to initialize the background board
           for(i=0; i<BOARD; i++)
         	{
         		for(j=0; j<BOARD; j++)
@@ -114,9 +121,10 @@ int main()
           updateBoard(boardMove, board);
           
           
-          turn = 1;
+          turn = 1; //Turn set to "1" to track number of turns in a game
           
           
+          //Initial check testing
           int checkCoords[2];
           checkCoords[0] = 0;
           checkCoords[1] = 0;
@@ -139,8 +147,7 @@ int main()
           
           printf("Mate? %d\n", mate);
           
-          //Engine testing
-          
+
           int score = scoreDif(board, boardMove, turn);
           printf("Points: %d\n", score);
     
@@ -158,7 +165,7 @@ int main()
           int input = 1;
           
           
-          while ((botMove2 != 0) && (turn < 350))  //THIS WHILE LOOP WAS EDITED TO SEE IF THE ROBOT WOULD PLAY AS BLACK
+          while ((botMove2 != 0) && (turn < 350))  //This while loop handles the user input and turn inputs
           {
             botMove2 = engineRecursion(board, boardMove, board3, turn, difficulty);
             
@@ -172,6 +179,7 @@ int main()
               
               if((turn % 2 == 0) || (input == 0))
               {
+                //This portion of the conditional handles engine/bot movement
                 intToMove(botMove2, currPos, currMove);
                 makeMoveTest(board, currPos, currMove, castleRights);
               }
@@ -187,24 +195,24 @@ int main()
                 printf("What row would you like your new piece to be in?: \n");
                 scanf("%d", &newY);
                 
-                moveTo[0] = newX;
+                moveTo[0] = newX;  //Converts user input into a matrix-style format
                 moveTo[1] = newY;
                 
                 moveFrom[0] = oldX;
                 moveFrom[1] = oldY;
   
-                legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn, castleRights); 
+                legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn, castleRights); //Ensures a legal move
                 
                 
                 if (legal == 1)
                 {
-                  makeMoveTest(board, moveFrom, moveTo, castleRights);
-                  //intToMove(botMove2, moveFrom, moveTo);
+                  makeMoveTest(board, moveFrom, moveTo, castleRights); //Makes a move if it is legal
                 }
-                else
+                else  //If the move is not legal, the following occurs
                 {
                   while (legal != 1)
                   {
+                    //This while loop will reiterate until the user inputs proper coordinates
                     printf("\nPlease make a legal move and try again\n");
                     printf("What column is your old piece in (1 for A, 2 for B, etc.)?: \n");
                     scanf("%d", &oldX);
@@ -226,14 +234,14 @@ int main()
                   }
                   
                 makeMoveTest(board, moveFrom, moveTo, castleRights);
+                //This will make the actual move
 
                 }
               }
-             //makeMoveTest(board, currPos, currMove, castleRights);
               printf("Bot Move (recursion): %d\n", botMove2);
               
               printBoardChar(board, 1);
-              turn++;
+              turn++; //Increments turn count
             }
           }
           
@@ -263,8 +271,6 @@ int main()
           
           printf("Mate? %d\n", mate);
           
-          //Engine testing
-          
           score = scoreDif(board, boardMove, turn);
           printf("Points: %d\n", score);
         
@@ -274,6 +280,8 @@ int main()
         printf("Shall we play again (1 for y, 2 for EvE, 3 or 4 for n)?\n");
         errCheck = scanf("%d", &userSelect);
         
+        
+        //Error checking
         if ((userSelect == 1 || userSelect == 2) && errCheck == 1)
         {
           
@@ -333,7 +341,7 @@ int main()
     		}
     	}
       
-      // list of all legal moves
+      //List of all legal moves is generated for first moveset
       int moveList[250];
       for(i=0; i<250; i++)
       {
@@ -378,8 +386,7 @@ int main()
         int mate = testMate(board, boardMove, checkSquares, turn);
         
         printf("Mate? %d\n", mate);
-        
-        //engine testing
+      
         
         int score = scoreDif(board, boardMove, turn);
         printf("Points: %d\n", score);
@@ -388,19 +395,17 @@ int main()
         int botMove2 = 1;
       
         printBoardChar(board, turn);
-        
-        //engine playing itself
-        
+         
         int currPos[2];
         int currMove[2];
         int playerInput;
         
-        //if input is made 0, engine plays itself
+        
+        
+        //If the input is made 0, the engine plays itself
         int input = 0;
-        
-        
           
-          
+          //This while loop handles the majority of the bot's logic and moves, which are turn dependent
           while((botMove2 != 0) && (turn < 350))
           {
             botMove2 = engineRecursion(board, boardMove, board3, turn, difficulty2);
@@ -444,7 +449,7 @@ int main()
           cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
           printf("Time taken: %f seconds\n", cpu_time_used);
           
-          //Asks the user for another game or end program.
+          //Asks the user for another game or end program
           printf("Shall I play again (4 for n, 2 for y)?\n");
           errCheck = scanf("%d", &userSelect);
           }
