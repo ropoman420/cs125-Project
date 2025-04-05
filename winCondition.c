@@ -6,7 +6,7 @@
 
 
 /*
-  Primary contributions by Garrett Ellis and Roman Warder
+  Primary contributions by Ellis Garrett and Roman Warder
   This program checks various win conditions according to Chess rulebook
   Comments by Caleb Groover
 */
