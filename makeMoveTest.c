@@ -199,7 +199,6 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         // cant castle out of check
         if(check == 0)
         {
-          printf("Not in check,\n");
           // castle right
           if(distance == 2)
           {
@@ -231,8 +230,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
           int check2 = testCheck(boardMove, kingCoords, checkCoords, turn);
           
           updateBoard(boardMove, board);
-          
-          printf("castling across check? %d\n", check);
+
           if(check == 1)
           {
             legal = 0;

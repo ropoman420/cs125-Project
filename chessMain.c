@@ -71,6 +71,7 @@ int main()
         int moveFrom[2];
         int turn = 1;
         int pieceVal;
+        int castleRights[2][2] = {{1, 1}, {1, 1}};
         
     
        
@@ -178,12 +179,12 @@ int main()
               moveFrom[0] = oldX;
               moveFrom[1] = oldY;
 
-              legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn);  ///////////////////////////////////////////LEGAL DOES NOT RETURN 1 EVER
+              legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn, castleRights);  ///////////////////////////////////////////LEGAL DOES NOT RETURN 1 EVER
               
               
               if (legal == 1)
               {
-                makeMoveTest(board, moveFrom, moveTo);
+                makeMoveTest(board, moveFrom, moveTo, castleRights);
               }
               else   ///////////////////////////////////////////THIS IS ALL OF THE CODE THAT TAKES USER INPUT. IT DOES NOT RETURN A POSITIVE LEGAL CHECK//////////////////////////////////////
               {
@@ -206,14 +207,14 @@ int main()
                   moveFrom[0] = oldX;
                   moveFrom[1] = oldY;
               
-                  legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn);
+                  legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn, castleRights);
                   printf("%d\n", legal);
                 }
               }
               //Take user input
             }
             
-            makeMoveTest(board, currPos, currMove);
+            makeMoveTest(board, currPos, currMove, castleRights);
             printf("Bot Move (recursion): %d\n", botMove2);
             
             printBoardChar(board, 1);
@@ -304,6 +305,7 @@ int main()
     	int i;
     	int j;	
       int turn = 1;	 
+      int castleRights[2][2] = {{1, 1}, {1, 1}};
     
     	for(i=0; i<BOARD; i++)
     	{
@@ -396,7 +398,7 @@ int main()
             intToMove(playerInput, currPos, currMove);
           }
           
-          makeMoveTest(board, currPos, currMove);
+          makeMoveTest(board, currPos, currMove, castleRights);
           printf("Bot Move (recursion): %d\n", botMove2);
           
           printBoardChar(board, 1);
