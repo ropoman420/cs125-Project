@@ -4,14 +4,28 @@
 
 #define BOARD 10
 
-// experimenting with chess engine
 
+/*
+  Programmed by Ellis and Caleb
+  Debugged by Ellis
+  Comments by Caleb Groover
+  
+  This program houses a variety of functions related to piece movement
+  being applied to the board as well as score tracking and additional
+  engine logic to ensure the best move from the computer.
+*/
+
+
+
+//This function will set a coordinate value in a format of "1234," translating user input for a desired move
 int moveToInt(int coord1[2], int coord2[2])
 {
   int out = (coord1[0] * 1000) + (coord1[1] * 100) + (coord2[0] * 10) + (coord2[1]);
   return out;
 }
 
+
+//This function will select which piece is being moved
 void intToMove(int num, int coord1[2], int coord2[2])
 {
   coord1[0] = (num - (num % 1000)) / 1000;
@@ -21,6 +35,8 @@ void intToMove(int num, int coord1[2], int coord2[2])
   coord2[1] = num % 10;
 }
 
+
+//This function tracks the score depending on which pieces are captured
 int score(int board[BOARD][BOARD], int board2[BOARD][BOARD], int turn)
 {
   updateBoard(board2, board);
@@ -94,6 +110,7 @@ int scoreDif(int board[BOARD][BOARD], int board2[BOARD][BOARD], int turn)
   return dif;
 }
 
+//This function is for the engine to calculate which move set has the highest results
 int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn, int castleRights[2][2])
 {
 
@@ -119,7 +136,7 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
   int moveFrom[2] = {0, 0};
   int moveTo[2] = {0, 0};
   
-  // checkmate variables
+  //Checkmate variables
   int checkCoords[2];
   int kingCoords[2];
   
@@ -155,11 +172,11 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
     
     intToMove(tempMove, moveFrom, moveTo);
   
-    // try making move
+    //Try making move
     makeMoveTest(boardMove, moveFrom, moveTo, castleRights);
 
     
-    // oponent in mate?
+    //Checks to see if the oponent is in mate
     kingCoords[0] = 0;
     kingCoords[1] = 0;
     
@@ -179,7 +196,7 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
       mate = testMate(boardMove, board3, checkSquares, (turn+1));
     }
     
-    // ensures that a mate is valued the highest
+    //This ensures that a mate is valued the highest
     
     if(mate == 1)
     {
@@ -190,7 +207,7 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
     
     randomNum = (rand() % 100);
     
-    // updates maximum move result value
+    //This updates maximum move result value
     if(curVal > maxVal)
     {
       maxVal = curVal;
