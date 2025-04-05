@@ -1,13 +1,18 @@
-//This function will check the legality of a player's desired move. 
-//RETURN 1 means that the move IS legal. RETURN 0 means the move is NOT legal
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
 #define BOARD 10
 
 
+/*
+  Similar to pieceMove.c, this function is not called in "main,"
+  though it was implemented for a while during the genesis of the
+  project. We are too afraid to delete it, though it served as a basis
+  for checkLegalTest function used later in "main."
+  Programmed by Caleb
+  Debugged by Ellis
+  Comments by Caleb Groover
+*/
 
 int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
 {  
@@ -202,139 +207,5 @@ int legalMove(int i, int j, int newX, int newY, int turn, int board[BOARD][BOARD
         break;
         
 return legal;
-}
-
-    
-  
-  
-  
-  /*  
-  switch(pieceValue)
-  {
-    case (1):
-      if (newX == (j+1) && (newY == i+1) && board[newX][newY] < 0)
-      {
-        //replace enemy piece with pawn
-        printf("You captured a piece with your pawn!\n");
-        return 1;
-      }
-      else if (newX == (j-1) && newY == (i+1) && board[newX][newY] < 0)
-      {
-        //replace enemy piece with pawn
-        printf("You captured a piece with your pawn!\n");
-        return 1;
-      }
-      else if (newX == j && newY == (i+1) && board[newX][newY] == 0)
-      {
-        //Returns positive check since space in front of pawn is empty
-        return 1;
-      }
-      else if (newX == j && i == 2 && board[newX][newY] == 0 && newY == i+2)
-      {
-        //Returns positive check if space in front of pawn in empty and on initial row
-        return 1;
-      }
-      else
-      {
-        return 0; //bad check. Move not valid
-      }
-   
-    case (2):
-      
-    
-    
-    case (3):
-      if (newX == (j+1) && (newY == i+1) && board[newX][newY] < 0)
-      {
-        printf("You captured a piece with your pawn!\n");
-        return 1;
-      }
-      else if (newX == (j-1) && newY == (i+1) && board[newX][newY] < 0)
-      {
-        printf("You captured a piece with your pawn!\n");
-        return 1;
-      }
-      else if (newX == j && newY == (i+1) && board[newX][newY] == 0)
-      {
-        return 1;
-      }
-      else if (newX == j && i == 2 && board[newX][newY] == 0 && newY == i+2)
-      {
-      
-      }
-      else
-      {
-        return 0; //bad check. Move not valid
-      }
-    
-    
-    case (5):
-      for (i = 0; i < 8; i + 2)
-      {
-        
-      }
-      
-    
-      if ()
-      {
-        return 1;
-      }
-      else if ()
-      {
-        return 1;
-      }
-      else
-      {
-        return 0; //bad check. Move not valid
-      }
-    
-    
-    
-    case (6): 
-     for (i = 0; i =< 8; i++)
-      {
-        //run the line of sight function to check for a piece at the spot and in that row
-      }
-      
-    
-      if ()
-      {
-        return 1;
-      }
-      else if ()
-      {
-        return 1;
-      }
-      else
-      {
-        return 0; //bad check. Move not valid
-      }
-    case (7):
-      if
-      {
-        // Ellis here, im writing a function specifically for testing the king and will just call that here
-      }
-      //else if (type < 0 && los == queen, add checks for validity of taking pieces)
-      {
-          //Kings cannot place themselves in check
-          printf("You cannot place yourself in check.\n");
-          return 0;
-      }
-      //else if (newX == /*old input + 1 && newY == /*old input + 1 && type == -1)
-      {
-        
-      }
-      else
-      {
-          return 0; //bad check. Move not valid
-      }
-    
-    
-    default:
-      printf("Please make a valid piece selection.\n");
-      return 0;
   }
-  
-  */
-
 }     
