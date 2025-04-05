@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define BOARD 10
 
@@ -93,7 +94,7 @@ int scoreDif(int board[BOARD][BOARD], int board2[BOARD][BOARD], int turn)
   return dif;
 }
 
-int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn)
+int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn, int castleRights[2][2])
 {
 
   int i;
@@ -101,7 +102,10 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
   int move = 0;
   int curVal = 0;
   int type;
-  int maxVal = -1000;
+  int maxVal = -10000;
+  
+  srand(time(NULL));
+  int randomNum;
   
   if(turn % 2 == 0)
   {
@@ -139,10 +143,8 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
     moveList[i] = 0;
     dummyMoveList[i] = 0;
   }
-//printf("1\n");
-//printBoardNum(board);
-  moves(board, boardMove, moveList, turn);
-//printf("2\n");
+  moves(board, boardMove, moveList, turn, castleRights);
+
   int tempMove = 0;
 
   i=0;
@@ -154,11 +156,8 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
     intToMove(tempMove, moveFrom, moveTo);
   
     // try making move
-    //printf("%d\n", tempMove);
-    //printf("%d, %d; %d, %d\n", moveFrom[0], moveFrom[1], moveTo[0], moveTo[1]);
-    makeMoveTest(boardMove, moveFrom, moveTo);
-    
-    //printBoardChar(boardMove);
+    makeMoveTest(boardMove, moveFrom, moveTo, castleRights);
+
     
     // oponent in mate?
     kingCoords[0] = 0;
@@ -169,79 +168,41 @@ int bestPieceMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int boar
     
     makeZero(checkSquares);
     
-    //printf("working...%d, %d\n", i, j);
+    curVal = 10*scoreDif(boardMove, board3, turn);
+    
     check = testCheck(boardMove, kingCoords, checkCoords, (turn+1));
     if(check == 1)
     {
+      curVal += 1;
+    
       getCheckSquares(boardMove, kingCoords, checkCoords, checkSquares);
       mate = testMate(boardMove, board3, checkSquares, (turn+1));
     }
     
-    curVal = scoreDif(boardMove, board3, turn);
-    //curVal = 40;
-    
     // ensures that a mate is valued the highest
-    
     
     if(mate == 1)
     {
-      curVal = 1000;
+      curVal = 10000;
     }
     
     updateBoard(board3, boardMove);
     
+    randomNum = (rand() % 100);
+    
     // updates maximum move result value
-    if(curVal >= maxVal)
+    if(curVal > maxVal)
     {
       maxVal = curVal;
       move = moveToInt(moveFrom, moveTo);
-      //printf("%d\n", move);
+    }
+    
+    if((curVal == maxVal) && (randomNum > 50))
+    {
+      maxVal = curVal;
+      move = moveToInt(moveFrom, moveTo);
     }
     i++;
   }
   return move;
 }
-/*
-int bestMove(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int board3[BOARD][BOARD], int turn)
-{
-  int type;
-  
-  if(turn % 2 == 0)
-  {
-    type = -1;
-  }
-  else
-  {
-    type = 1;
-  }
-
-  int i;
-  int j;
-  int move = 0;
-  int curMove = 0;
-  int maxVal = -1000;
-  int curVal;
-  int posSquare;
-  
-  for(i=1; i<9; i++)
-  {
-    for(j=1; j<9; j++)
-    {
-      posSquare = board[i][j];
-      
-      if((board[i][j] * type > 0) && (makePos(posSquare) != 4))
-      {
-        curVal = -10000;
-        curMove = bestPieceMove(board, boardMove, board3, turn, j, i, &curVal);
-        
-        if(curVal >= maxVal)
-        {
-          maxVal = curVal;
-          move = curMove;
-        }
-      }
-    }
-  }
-  
-  return move;
-}*/

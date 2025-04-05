@@ -84,7 +84,7 @@ void pinDirection(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int piec
   }
 }
 
-int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], int turn)
+int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], int turn, int castleRights[2][2])
 {
   int type;
   
@@ -143,7 +143,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
       kingMove[0] = kingCoords[0] + j;
       kingMove[1] = kingCoords[1] + i;
       
-      if(checkLegalTest(board, boardMove, kingCoords, kingMove, turn) == 1)
+      if(checkLegalTest(board, boardMove, kingCoords, kingMove, turn, castleRights) == 1)
       {
         move = moveToInt(kingCoords, kingMove);
         addToList(moveList, move);

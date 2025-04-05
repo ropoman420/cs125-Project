@@ -21,7 +21,7 @@ void removePassant(int board[BOARD][BOARD], int type)
   }
 }
 
-void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
+void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2], int castleRights[2][2])
 {
   int x1 = moveFrom[0];
   int y1 = moveFrom[1];
@@ -58,12 +58,70 @@ void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
       board[y2-board[y2][x2]][x2] = board[y2][x2] * 4;
     }
     
-    //piece removed from first position
+    // piece removed from first position
     board[y1][x1] = 0;
+    
+    // completing castle move
+    
+    if((board[y2][x2] == 7*type) && (makePos(x2-x1) == 2))
+    {
+      int castleDirection = (x2 - x1) / 2;
+
+      int rookCoordX = x2+castleDirection;
+      
+      // if queenside castle, rook is 1 space farther away from king
+      if(board[y2][x2+castleDirection] == 0)
+      {
+        rookCoordX += castleDirection;
+      }
+      
+      board[y2][rookCoordX] = 0;
+      board[y2][x2-castleDirection] = 5*type;
+    }
+    
+    
+    // updating castling rights
+    
+    // kings
+    if(x1 == 5)
+    {
+      // white king
+      if(y1 == 1)
+      {
+        castleRights[0][0] = 0;
+        castleRights[0][1] = 0;
+      }
+      
+      // black king
+      if(y1 == 8)
+      {
+        castleRights[1][0] = 0;
+        castleRights[1][1] = 0;
+      }
+    }
+    
+    // rooks
+    if((x1 == 1) && (y1 == 1))
+    {
+      castleRights[0][0] = 0;
+    }
+    if((x1 == 8) && (y1 == 1))
+    {
+      castleRights[0][1] = 0;
+    }
+    if((x1 == 1) && (y1 == 8))
+    {
+      castleRights[1][0] = 0;
+    }
+    if((x1 == 8) && (y1 == 8))
+    {
+      castleRights[1][1] = 0;
+    }
+    
   }
 }
 
-int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveFrom[2], int moveTo[2], int turn)
+int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveFrom[2], int moveTo[2], int turn, int castleRights[2][2])
 {
   updateBoard(boardMove, board);
 
@@ -72,6 +130,8 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
   int i;
   int dummyRay;
   int type;
+  int rookFound;
+  int castleType;
   
   int x = moveFrom[0];
   int y = moveFrom[1];
@@ -85,20 +145,29 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
     type = 1;
   }
   
+  // copy of castleRights, so it is not altered when checking legality of a move
+  int castleRightsCopy[2][2];
+  castleRightsCopy[0][0] = castleRights[0][0];
+  castleRightsCopy[0][1] = castleRights[0][1];
+  castleRightsCopy[1][0] = castleRights[1][0];
+  castleRightsCopy[1][1] = castleRights[1][1];
+  
   // check variables
   int check = 0;
-  int kingCoords[2];
-  int checkCoords[2];
-  kingCoords[0] = 0;
-  kingCoords[1] = 0;
-  checkCoords[0] = 0;
-  checkCoords[1] = 0;
+  int kingCoords[2] = {0, 0};
+  int checkCoords[2] = {0, 0};
   
   int pieceOfInterest = board[y][x];
   pieceOfInterest = makePos(pieceOfInterest);
   
   int disx;
   int disy;
+  
+  int kingRight = 0;
+  int kingLeft = 0;
+  
+  int posDummy1[2] = {0, 0};
+  int posDummy2[2] = {0, 0};
   
   //printf("piece: %d\n", pieceOfInterest);
   
@@ -107,7 +176,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
     switch(pieceOfInterest)
     {
       case 7:
-        // kings (and knights temporarily)
+        // kings
         for(i=-8; i<=-1; i++)
         {
           dummyRay = rayLos(board, moveFrom, moveTo, i, 1);
@@ -115,10 +184,63 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
           if(dummyRay == 1)
           {
             legal = 1;
+          }     
+        }
+        
+        // castling legality
+            
+        // converts type from -1=black, 1=white --> 0=white, 1=black, for use as castleRights matrix index
+        
+        
+        castleType = (type-1)/-2;
+        check = testCheck(board, kingCoords, checkCoords, turn);
+        int distance = moveTo[0] - moveFrom[0];
+        
+        // cant castle out of check
+        if(check == 0)
+        {
+          printf("Not in check,\n");
+          // castle right
+          if(distance == 2)
+          {
+            rookFound = rayLos(board, kingCoords, posDummy2, 3, 0);
+            
+            if((rookFound == 5*type) && (castleRightsCopy[castleType][1] == 1))
+            {
+              legal = 1;
+            }
+          }
+          
+          // castle left
+          if(distance == -2)
+          {
+            rookFound = rayLos(board, kingCoords, posDummy2, 7, 0);
+            
+            if((rookFound == 5*type) && (castleRightsCopy[castleType][0] == 1))
+            {
+              legal = 1;
+            }
+          }
+          
+          // moving king 1 square in direction of castle to check if castle is across check
+          posDummy1[0] = moveTo[0] + (distance/2);
+          posDummy1[1] = moveTo[0];
+          updateBoard(boardMove, board);
+          
+          makeMoveTest(boardMove, moveFrom, posDummy1, castleRightsCopy);
+          int check2 = testCheck(boardMove, kingCoords, checkCoords, turn);
+          
+          updateBoard(boardMove, board);
+          
+          printf("castling across check? %d\n", check);
+          if(check == 1)
+          {
+            legal = 0;
           }
         }
         break;
       case 6:
+        // queen moves
         for(i=1; i<=8; i++)
         {
           dummyRay = rayLos(board, moveFrom, moveTo, i, 1);
@@ -130,6 +252,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         }
         break;
       case 5:
+        // rook moves
         for(i=1; i<=8; i+=2)
         {
           dummyRay = rayLos(board, moveFrom, moveTo, i, 1);
@@ -141,6 +264,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         }
         break;
       case 3:
+        // bishop moves
         for(i=2; i<8; i+=2)
         {
           dummyRay = rayLos(board, moveFrom, moveTo, i, 1);
@@ -152,8 +276,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         }
         break;
       case 2:
-        //int disx;
-        //int disy;
+        // knight moves
         disx = makePos((moveTo[0] - x));
         disy = makePos((moveTo[1] - y));
         
@@ -163,11 +286,11 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         }
         break;
       case 1:
+        // pawn moves
         // forward 1
         if((board[y+type][x] == 0) && (y+type == moveTo[1]) && (x == moveTo[0]))
         {
           legal = 1;
-          //printf("pawn can go 1 forward\n");
         }
         
         // forward 2
@@ -176,13 +299,11 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
           if((type == 1) && (y == 2))
           {
             legal = 1;
-            //printf("pawn can go 2 forward\n");
           }
           
           if((type == -1) && (y == 7))
           {
             legal = 1;
-            //printf("pawn can go 2 forward\n");
           }
         }
         
@@ -192,13 +313,12 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         if((board[y+type][x+distanceX] * type < 0) && (y+type == moveTo[1]) && (makePos(distanceX) == 1))
         {
           legal = 1;
-          //printf("pawn can capture\n");
         }
         break;
     }
     
     // testing if this move will put king in check
-    makeMoveTest(boardMove, moveFrom, moveTo);
+    makeMoveTest(boardMove, moveFrom, moveTo, castleRightsCopy);
     
     check = testCheck(boardMove, kingCoords, checkCoords, turn);
     
