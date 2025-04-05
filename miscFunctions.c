@@ -4,8 +4,16 @@
 
 #define BOARD 10
 
-// This file contains ungrouped usefull functions
+/*
+  This program contains ungrouped useful functions
+  that are used throughout multiple compilable programs
+  Programmed by Ellis, Caleb, and Roman
+  Comments by Caleb Groover
+*/
 
+
+/*This function makes a pieces value positive so that there
+are no negative numbers when handling coordinate data*/
 int makePos(int value)
 {
   if(value < 0)
@@ -19,6 +27,8 @@ int makePos(int value)
 
 }
 
+
+//This function checks the possible movement for a knight
 int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction)
 {
   int di = 0;
@@ -71,7 +81,7 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
     
   if( (y > 8) || (y < 1) || (x > 8) || (x < 1) )
   {
-    //printf("The move is out of bounds please select another: ");
+    //The move is out of bounds
   }
   else 
   {
@@ -82,22 +92,25 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
   return currPiece;
 }
 
+
+//This function tests if a piece is within a line of sight of another piece
 int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int direction, int cmp)
 {
-  // input board, start coordnate, desired/output coordnates, direction, and if you are comparing coordinates
-  //if cmp = 1 function returns 1 only if coordEnd is within ray
+  /*Passed variables include input board, start coordnate, 
+  desired/output coordnates, direction, and if you are comparing coordinates
+  If cmp = 1 function returns 1 only if coordEnd is within ray*/
   int di;
   int dj;
   int oneSquare = 0;
   
-  // if direction is negative, function only checks one square in direction
+  //If direction is negative, function only checks one square in direction
   if(direction < 0)
   {
     direction = direction * -1;
     oneSquare = 1;
   }
   
-  switch(direction)
+  switch(direction)  //Switch statement to check each radius surrounding a piece
   {
     case 1:
       di = 1;
@@ -172,7 +185,8 @@ int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int dire
   }
 }
 
-// given 2 positions on board, function returns direction to get from one to the other
+
+//Given 2 positions on board, this function returns which direction is needed to get from one to the other
 int testDirection(int pos1[2], int pos2[2])
 {
   int direction = 0;
