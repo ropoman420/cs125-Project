@@ -3,7 +3,16 @@
 #include <string.h>
 
 #define BOARD 10
-// makes matrix zeros
+
+/*
+  Programmed by Ellis
+  This program tests to see if the King is in check from various locations
+  Comments and cleanup by Caleb Groover
+*/
+
+
+
+//This function makes a matrix of zeroes for the necessary calculations
 void makeZero(int board[BOARD][BOARD])
 {
   int i;
@@ -17,6 +26,8 @@ void makeZero(int board[BOARD][BOARD])
   }
 }
 
+
+//This functions determines the location of the King
 void findKing(int board[BOARD][BOARD], int type, int kingPos[2])
 {
   int i;
@@ -35,9 +46,11 @@ void findKing(int board[BOARD][BOARD], int type, int kingPos[2])
   }
 }
 
+
+//This function finds which squares are threatening the King (in check)
 void getCheckSquares(int board[BOARD][BOARD], int kingPos[2], int checker[2], int output[BOARD][BOARD])
 {
-  // ensures output board starts as 0
+  //Ensures output board starts as 0
   makeZero(output);
   
   int direction = 0;
@@ -58,8 +71,8 @@ void getCheckSquares(int board[BOARD][BOARD], int kingPos[2], int checker[2], in
     direction = testDirection(kingPos, checker);
   }
   
-  int di;
-  int dj;
+  int di;  //The positional difference along the x-axis
+  int dj;  //The positional difference along the y-axis
 
   switch(direction)
   {
@@ -119,6 +132,9 @@ void getCheckSquares(int board[BOARD][BOARD], int kingPos[2], int checker[2], in
 }
 
 
+
+/*This function uses a different line of sight function to find which 
+pieces are threatening the King and where from*/
 int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int turn)
 {
   checkCoord[0] = 0;
@@ -145,7 +161,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
   int i;
   int j;
   
-  //finding king
+  //Finding king
   findKing(board, type, kingPos);
   
   kingCoord[0] = kingPos[0];
@@ -153,17 +169,16 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
   
   int pieceKnight = 0;
   
-  // test for check
+  //Test for check
   for(i=1; i<=8; i++)
   {
-    // uses rayLos at king position to search for checking pieces
+    //Uses rayLos at king position to search for checking pieces
     piece = rayLos(board, kingPos, piecePos, i, 0);
     piece1 = rayLos(board, kingPos, piecePos1, (i * -1), 0);
     
-    // knight checking piece?
-    
+    //Knight checking piece
     pieceKnight = rayKnight(board, kingPos, piecePos2, i, 0);
-    //printf("%d\n", pieceKnight);
+
     if(pieceKnight == -2 * type)
     {
       check = 1;
@@ -171,7 +186,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
       checkCoord[1] = piecePos2[1];
     }
     
-    // bishop or queen
+    //Bishop or queen (x movement)
     if(((i % 2) == 0) && ((piece == (-3 * type)) || (piece == (-6 * type))))
     {
       check = 1;
@@ -179,7 +194,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
       checkCoord[1] = piecePos[1];
     }
     
-    // queen or rook
+    //Queen or rook (+ movement)
     if(((i % 2) == 1) && ((piece == (-5 * type)) || (piece == (-6 * type))))
     {
       check = 1;
@@ -187,7 +202,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
       checkCoord[1] = piecePos[1];
     }
     
-    // kings touching?
+    //Checks if the Kings are adjacent
     if(piece1 == (-7 * type))
     {
       check = 1;
@@ -195,7 +210,7 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
       checkCoord[1] = piecePos1[1];
     }
     
-    // pawns
+    //Pawns
     if((piece1 == 1) && (type == -1) && ((i == 6) || (i == 4)))
     {
       check = 1;
@@ -209,15 +224,13 @@ int testCheck(int board[BOARD][BOARD], int kingCoord[2], int checkCoord[2], int 
       checkCoord[1] = piecePos1[1];
     }
     
-    // knights
-    
     
   }
   
   return check;
 }
 
-// sets first input equal to second
+//This function sets the first input equal to second so as to update the board
 void updateBoard(int b1[BOARD][BOARD], int b2[BOARD][BOARD])
 {
   int i;
