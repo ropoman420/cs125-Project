@@ -201,7 +201,7 @@ int main()
                   makeMoveTest(board, moveFrom, moveTo, castleRights);
                   //intToMove(botMove2, moveFrom, moveTo);
                 }
-                else   
+                else
                 {
                   while (legal != 1)
                   {
@@ -224,10 +224,11 @@ int main()
                 
                     legal = checkLegalTest(board, boardMove, moveFrom, moveTo, turn, castleRights);
                   }
-                makeMoveTest(board, currPos, currMove, castleRights);
+                  
+                makeMoveTest(board, moveFrom, moveTo, castleRights);
+
                 }
               }
-              
              //makeMoveTest(board, currPos, currMove, castleRights);
               printf("Bot Move (recursion): %d\n", botMove2);
               
