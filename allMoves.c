@@ -3,18 +3,7 @@
 
 #define BOARD 10
 
-/*
-  Programmed by Ellis
-  Comments by Caleb Groover
-  
-  This program creates a move list and uses a line of sight function
-  in order to find which pieces are available to a particular piece. It
-  is similar in nature to the line of sight function, but excludes moves
-  that are not legal, increasing the calculations per second.
-*/
-
-
-//This function adds a move to end of legal move list
+// adds a move to end of legal move list
 void addToList(int moveList[], int move)
 {
   int i = 0;
@@ -27,7 +16,7 @@ void addToList(int moveList[], int move)
   moveList[i] = move;
 }
 
-//This function is similar to rayLos but only adds squares to move list, more efficient for engine use
+// similar to rayLos but only adds squares to move list, more efficient for engine use
 void rayLegal(int board[BOARD][BOARD], int moveList[], int pos[2], int xdir, int ydir, int type)
 {
   int curX = pos[0] + xdir;
@@ -63,7 +52,7 @@ void rayLegal(int board[BOARD][BOARD], int moveList[], int pos[2], int xdir, int
   }
 }
 
-//This function will produce the only direction a pinned piece is allowed to move
+// this will be the only direction a pinned piece is allowed to move
 void pinDirection(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int pieceX, int pieceY, int turn, int direction[2])
 {
   direction[0] = 0;
@@ -95,8 +84,6 @@ void pinDirection(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int piec
   }
 }
 
-
-//This function generates a move list for each piecece on the board
 int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], int turn, int castleRights[2][2])
 {
   int type;
@@ -116,7 +103,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   int i = 0;
   int j, k, l;
   
-  //This clears the move list
+  // clear list
   while(moveList[i] != 0)
   {
     moveList[i] = 0;
@@ -126,8 +113,9 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   int board3[BOARD][BOARD];
   int checkSquares[BOARD][BOARD];
   
-  //Now it will add all legal moves to list
-  //The outer loops find pieces to move
+  // add all legal moves to list
+  
+  // outer loops find pieces to move
   
   int piecePos[2] = {0, 0};
   
@@ -147,7 +135,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   
   updateBoard(boardMove, board);
 
-  //This is adding King moves to the list
+  // adding king moves to list
   for(i=-1; i<=1; i++)
   {
     for(j=-1; j<=1; j++)
@@ -163,7 +151,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
     }
   }
   
-  //If the King is in doublecheck, exit before checking moves for non-king pieces
+  // if doublecheck, exit before checking moves for non-king pieces
   if(check == 1)
   {
     boardMove[checkCoords[1]][checkCoords[0]] = 9;
@@ -179,7 +167,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   
   if(check == 1)
   {
-    //This will find all moves that can block check
+    // find all moves that can block check
     
     for(i=0; i<BOARD; i++)
     {
@@ -194,33 +182,36 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
   }
   else
   {
-    //This will search the board for every piece of correct type
+    // seach board for every piece of correct type
     i2 = 1;
-    
+    //printf("2\n");
     for(i=7; i>=0; i--)
     {
       j2 = 1;
       for(j=7; j>=0; j--)
       {
-        //Checks if there is a movable piece at coordinates
+        //if movable piece at coordinates
         if(board[i2][j2] * type > 0)
         {
+          //printf("%d, %d \n", j2, i2);
+          
           positivePiece = board[i2][j2];
           piecePos[0] = j2;
           piecePos[1] = i2;
-         
+          //printf("%d, %d\n", j2, i2);
           if(makePos(positivePiece) != 7)
           {
             pinDirection(board, boardMove, j2, i2, turn, direction);
           }
+          //printf("%d, %d\n", j2, i2);
 
           switch(makePos(positivePiece))
           {
             case 1:
-              //Pawn's move set
+              // pawns
               
-              //Moving forward
-              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] != 0) && (direction[0] == 0)))
+              // moving forward
+              if(((direction[0] == 0) && (direction[1] == 0)) || ((direction[1] != 0) && (direction[0] == 0)))
               {
                 if(board[i2+type][j2] == 0)
                 {
@@ -230,7 +221,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                   move = moveToInt(piecePos, moveTo);
                   addToList(moveList, move);
                   
-                  //Moving forward 2
+                  // moving forward 2?
                   if((board[i2-2][j2] == 0) && (type == -1) && (i2 == 7))
                   {
                     moveTo[1] -= 1;
@@ -247,8 +238,8 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                 }
               }
               
-              //Capturing diagonally
-              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] == 1) && (direction[0] == 1)) || ((direction[1] == -1) && (direction[0] == -1)))
+              // capturing diagonally
+              if(((direction[0] == 0) && (direction[1] == 0)) || ((direction[1] == 1) && (direction[0] == 1)) || ((direction[1] == -1) && (direction[0] == -1)))
               {
                 if((board[i2+type][j2+type]*type < 0) && (board[i2+type][j2+type] != 9))
                 {
@@ -259,9 +250,9 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                 }
               }
               
-              if(((direction[0] == 0) && (direction[0] == 0)) || ((direction[1] == 1) && (direction[0] == -1)) || ((direction[1] == -1) && (direction[0] == 1)))
+              if(((direction[0] == 0) && (direction[1] == 0)) || ((direction[1] == 1) && (direction[0] == -1)) || ((direction[1] == -1) && (direction[0] == 1)))
               {
-                 if((board[i2+type][j2-type]*type < 0) && (board[i2+type][j2-type] != 9))
+                if((board[i2+type][j2-type]*type < 0) && (board[i2+type][j2-type] != 9))
                 {
                   moveTo[0] = piecePos[0] - type;
                   moveTo[1] = piecePos[1] + type;
@@ -270,36 +261,37 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                 }
               }
               break;
- 
             case 2:
-              //Knight's move set
-              for(k=-2; k<=2; k++)
+              // knights 
+              if((direction[0] == 0) && (direction[1] == 0))
               {
-                for(l=-2; l<=2; l++)
+                for(k=-2; k<=2; k++)
                 {
-                  if(((makePos(k) == 1) && (makePos(l) == 2)) || ((makePos(k) == 2) && (makePos(l) == 1)))
+                  for(l=-2; l<=2; l++)
                   {
-                    moveTo[0] = piecePos[0] + k;
-                    moveTo[1] = piecePos[1] + l;
-                    
-                    if((moveTo[0] > 8) || (moveTo[0] < 1) || (moveTo[1] > 8) || (moveTo[1] < 1))
+                    if(((makePos(k) == 1) && (makePos(l) == 2)) || ((makePos(k) == 2) && (makePos(l) == 1)))
                     {
-                      continue;
-                    }
-                    
-                    if(board[moveTo[1]][moveTo[0]]*type <= 0)
-                    {
-                      move = moveToInt(piecePos, moveTo);
-                      addToList(moveList, move);
+                      moveTo[0] = piecePos[0] + k;
+                      moveTo[1] = piecePos[1] + l;
+                      
+                      if((moveTo[0] > 8) || (moveTo[0] < 1) || (moveTo[1] > 8) || (moveTo[1] < 1))
+                      {
+                        continue;
+                      }
+                      
+                      if(board[moveTo[1]][moveTo[0]]*type <= 0)
+                      {
+                        move = moveToInt(piecePos, moveTo);
+                        addToList(moveList, move);
+                      }
                     }
                   }
                 }
               }
               
               break;
-            
             case 3:
-              //Bishop's move set
+              // bishops
               posX = direction[0];
               posY = direction[1];
             
@@ -318,9 +310,8 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                 rayLegal(board, moveList, piecePos, -direction[0], -direction[1], type);
               }
               break;
-            
             case 5:
-              //Rook's move set
+              // rooks
               if((direction[0] == 0) && (direction[1] == 0))
               {
                 rayLegal(board, moveList, piecePos, 0, 1, type);
@@ -336,9 +327,8 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
                 rayLegal(board, moveList, piecePos, -direction[0], -direction[1], type);
               }
               break;
-            
             case 6:
-              //Queen's move set
+              // queens
               if((direction[0] == 0) && (direction[1] == 0))
               {
                 for(k=-1; k<=1; k++)
@@ -361,7 +351,7 @@ int moves(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int moveList[], 
           }         
         }
         
-        //Here, i and j loop from board edges to the center, such that the engine will find moves playing in the center of the board first
+        // i and j loop from board edges to the center, such that the engine while find moves playing in the center of the board first
         if(j % 2 == 0)
         {
           jPos = j * -1;
