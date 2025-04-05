@@ -7,9 +7,16 @@
 #define GREEN "\e[0;32m"
 #define RESET "\x1b[0m"
 
+/*
+  This program was primarily written by Ellis. Debugging by
+  Caleb and Roman. Comments by Caleb Groover.
+  This program handles the initialization of the entire chess board,
+  from setting initial space values to printing the letters and colors
+  associated with said letters.
+*/
 
-// this function initializes the chess board
 
+//This function initializes the chess board's background values
 void makeBoard(int board[BOARD][BOARD])
 {
 	int i;
@@ -72,6 +79,8 @@ void makeBoard(int board[BOARD][BOARD])
 	// none = 0
 }
 
+
+//This function prints the colors and pound signs that enclose the board
 void printBoardNum(int board[BOARD][BOARD])
 {
 	int i;
@@ -102,6 +111,8 @@ void printBoardNum(int board[BOARD][BOARD])
 
 }
 
+
+//This function prints the column footers for the board
 void letterIndex(char str[5], int index)
 {
   strcpy(str, "");
@@ -140,6 +151,8 @@ void letterIndex(char str[5], int index)
 
 }
 
+
+//This function takes a value for a specific tile/piece and converts it to the appropriate character
 void printSquare(int board[BOARD][BOARD], int i, int j)
 {
   int absVal = makePos(board[i][j]);
@@ -204,6 +217,8 @@ void printSquare(int board[BOARD][BOARD], int i, int j)
   }
 }
 
+
+//This function prints the grid style applied to the entire chess board
 void printBoardChar(int board[BOARD][BOARD], int turn)
 {
 	int i;
