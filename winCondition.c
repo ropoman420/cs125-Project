@@ -4,10 +4,20 @@
 
 #define BOARD 10
 
+
+/*
+  Primary contributions by Garrett Ellis and Roman Warder
+  This program checks various win conditions according to Chess rulebook
+  Comments by Caleb Groover
+*/
+
+
+/*This function will check a basic moveset such 
+as exceeding the board or selecting the wrong piece*/
 int basicMoveCheck(int board[BOARD][BOARD], int pos1[2], int pos2[2], int turn)
 {
-  int type;
-  int legal = 1;
+  int type;  //Type represents a pieces side (black or white)
+  int legal = 1; //This function assumes that a move is legal until proven otherwise
   
   if(turn % 2 == 0)
   {
@@ -52,9 +62,11 @@ int basicMoveCheck(int board[BOARD][BOARD], int pos1[2], int pos2[2], int turn)
   
 }
 
+
+/*This function will return 1 if a selected piece is stuck 
+to the King (as self-check is not allowed). It will return 0 otherwise*/
 int testPin(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int pos[2], int pos2[2])
 {
-  // this functions returns 1 if selected piece is pinned to the king, 0 if not
   updateBoard(boardMove, board);
   int mate = 0;
   
@@ -87,9 +99,12 @@ int testPin(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int pos[2], in
   return pinned;
 }
 
+
+
+//This function will output 1 if a checkmate is on the board for the indicated turn
 int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares[BOARD][BOARD], int turn)
 { 
-  // this function will output 1 if a checkmate is on the board for the indicated turn
+
   int mate = 0;
 
   updateBoard(board2, board);
@@ -110,17 +125,16 @@ int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares
   int dummyCoords2[2] = {0, 0};
 
   
-  // in check with first checking pieve removed?
+  //Asks, "is the King in check with first checking piece removed?"
   int doubleCheck = testCheck(board2, dummyCoords, dummyCoords2, turn);
   
   if(doubleCheck == 1)
   {
     makeZero(checkSquares);
   }
+
   
-  //printBoardChar(checkSquares, turn);
-  
-  // legal king moves
+  //Generates a list of legal King moves
   int kingMoves = 0;
   int piece;
   int piecePos[2];
@@ -145,7 +159,7 @@ int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares
       }
     }
   }
-  // if king is in check from 2 pieces it must move, no pieces can block
+  //If king is in check from 2 pieces it must move, assuming no pieces can block
   
   if((doubleCheck == 1) && (kingMoves == 0))
   {
@@ -153,10 +167,9 @@ int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares
   }
   
   int blockCheck = 0;
-  
+  //This if loop tests to see if any pieces can prevent check
   if((doubleCheck == 0) && (kingMoves == 0) && (check == 1))
   {
-    // check to see if any piece can block
     int moveList[250];
     
     for(i=0; i<250; i++)
@@ -172,6 +185,6 @@ int testMate(int board[BOARD][BOARD], int board2[BOARD][BOARD], int checkSquares
     }
   }
 
-  return mate;
+  return mate; //Returns a final value if a King is in checkmate
 }
 
