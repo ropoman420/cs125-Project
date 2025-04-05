@@ -263,7 +263,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         break;
       case 3:
         // bishop moves
-        for(i=2; i<8; i+=2)
+        for(i=2; i<=8; i+=2)
         {
           dummyRay = rayLos(board, moveFrom, moveTo, i, 1);
           
@@ -318,9 +318,9 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
     // testing if this move will put king in check
     makeMoveTest(boardMove, moveFrom, moveTo, castleRightsCopy);
     
-    check = testCheck(boardMove, kingCoords, checkCoords, turn);
+    int check3 = testCheck(boardMove, kingCoords, checkCoords, turn);
     
-    if(check == 1)
+    if(check3 == 1)
     {
       legal = 0;
     }
