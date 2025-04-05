@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #define BOARD 10
+
+
+/*
+  This code was programmed by Caleb before
+  it was moved elsewhere. We are 99% sure that
+  this is derelict and non-functional, 
+  but we are too scared to remove it.
+  Comments and code by Caleb Groover.
+*/
 
 void pieceMove(int i, int j, int pieceVal, int turn, int board[BOARD][BOARD], int moveFrom[2], int moveTo[2])
 {
