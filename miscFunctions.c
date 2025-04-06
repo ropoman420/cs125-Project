@@ -66,7 +66,7 @@ int rayKnight(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int d
       break;
     case 8:
       di = -1;
-      dj = 2;
+      dj = -2;
       break;
     default:
       //printf("Invalid Knight Movement");
