@@ -1,5 +1,3 @@
-
-
 #include "Chess.h"
 
 /*
@@ -101,7 +99,7 @@ int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int dire
   int dj;
   int oneSquare = 0;
   
-  //If direction is negative, function only checks one square in direction
+  //If direction is negative, function only checks one square in direction, usefull for king moves
   if(direction < 0)
   {
     direction = direction * -1;
@@ -185,6 +183,7 @@ int rayLos(int board[BOARD][BOARD], int coordStart[2], int coordEnd[2], int dire
 
 
 //Given 2 positions on board, this function returns which direction is needed to get from one to the other
+// direction is represented by an integer 1-8, starting at the vertical going clokcwise
 int testDirection(int pos1[2], int pos2[2])
 {
   int direction = 0;

@@ -1,5 +1,3 @@
-
-
 #include "Chess.h"
 
 /*
@@ -97,14 +95,14 @@ void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2], int c
     //Kings
     if(x1 == 5)
     {
-      //White king
+      //White king moved?
       if(y1 == 1)
       {
         castleRights[0][0] = 0;
         castleRights[0][1] = 0;
       }
       
-      //Black king
+      //Black king moved?
       if(y1 == 8)
       {
         castleRights[1][0] = 0;
@@ -112,7 +110,7 @@ void makeMoveTest(int board[BOARD][BOARD], int moveFrom[2], int moveTo[2], int c
       }
     }
     
-    //Rooks
+    //Rooks moved?
     if((x1 == 1) && (y1 == 1))
     {
       castleRights[0][0] = 0;
@@ -203,8 +201,7 @@ int checkLegalTest(int board[BOARD][BOARD], int boardMove[BOARD][BOARD], int mov
         }
         
         //Castling legality  
-        //Converts type from -1=black, 1=white --> 0=white, 1=black, for use as castleRights matrix index
-        
+        //Converts type from -1=black, 1=white --> 0=white, 1=black, for use as castleRights matrix index 
         
         castleType = (type-1)/-2;
         check = testCheck(board, kingCoords, checkCoords, turn);

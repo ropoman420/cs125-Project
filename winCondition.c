@@ -1,5 +1,3 @@
-
-
 #include "Chess.h"
 
 /*
@@ -43,7 +41,7 @@ int basicMoveCheck(int board[BOARD][BOARD], int pos1[2], int pos2[2], int turn)
     //Index excedes board bounds
   }
   
-  if(board[y2][x2] * type > 0)
+  if((board[y2][x2] * type > 0) && (board[y2][x2] * type != 4))
   {
     legal = 0;
     //cannot take own piece
