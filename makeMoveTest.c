@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-#define BOARD 10
+
+#include "Chess.h"
 
 /*
   This program was primarily coded by Caleb and Ellis

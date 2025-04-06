@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define BOARD 10
+
+#include "Chess.h"
+
 #define RED "\x1b[31m"
 #define GREEN "\e[0;32m"
 #define RESET "\x1b[0m"

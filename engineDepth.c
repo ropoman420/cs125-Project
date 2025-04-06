@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-#define BOARD 10
 
+#include "Chess.h"
 
 /*
   Programmed by Ellis, Caleb, and Roman

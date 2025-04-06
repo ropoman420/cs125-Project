@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
-#define BOARD 10
+
+#include "Chess.h"
 
 /*
 	Authors: Caleb Groover, Ellis Garrett, Roman Warder

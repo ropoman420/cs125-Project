@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-#define BOARD 10
+
+#include "Chess.h"
 
 /*
   Programmed by Ellis

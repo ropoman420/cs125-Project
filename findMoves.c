@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define BOARD 10
 
+#include "Chess.h"
 
 /*
   This program was primarily written by Roman and Ellis

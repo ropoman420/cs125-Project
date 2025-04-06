@@ -1,6 +1,6 @@
-#include <stdio.h>
 
-#define BOARD 10
+
+#include "Chess.h"
 
 // this function determines if the board has insufficient material for a forced win
 int insufficientMaterial(int board[BOARD][BOARD], int boardMove[BOARD][BOARD])

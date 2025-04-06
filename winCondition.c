@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
-#define BOARD 10
 
+#include "Chess.h"
 
 /*
   Primary contributions by Ellis Garrett and Roman Warder

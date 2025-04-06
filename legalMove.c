@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-#define BOARD 10
 
+#include "Chess.h"
 
 /*
   Similar to pieceMove.c, this function is not called in "main,"
